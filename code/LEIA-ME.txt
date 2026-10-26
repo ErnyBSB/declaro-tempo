@@ -1,4 +1,4 @@
-DECLARO MEU TEMPO (versão 0.8, out/26 — PWA em rede)
+DECLARO MEU TEMPO (versão 1.0, out/26 — PWA em rede)
 ====================================================
 
 Este arquivo é a documentação de verdade do programa. Não é uma lista
@@ -14,6 +14,40 @@ de jeitos diferentes: lá, para consultar; aqui, para entender.
 As seções vêm da mais nova para a mais antiga. Uma seção antiga não é
 apagada quando a decisão muda: a nova diz o que mudou e por quê, e a
 antiga fica como registro do que valia antes.
+
+Versão 1.0: Declaro Meu Tempo, em produção (novidade da v1.0)
+-------------------------------------------------------------
+A 1.0 marca o primeiro uso em produção. Nada mudou no jeito de usar:
+o que muda é o nome, a casa e o compromisso com os arquivos.
+
+O nome. O programa passa a se chamar "Declaro Meu Tempo". O nome
+antigo, "Declaração de disponibilidade", dizia bem o que se declara —
+disponibilidade prevista, não horário cumprido —, e isso continua
+valendo. O novo diz quem declara: a própria pessoa, em primeira
+pessoa, sobre o próprio tempo. Muda no título, no rail, na Ajuda, no
+Sobre e no ícone instalado ("Meu Tempo"). Não muda nenhuma chave
+gravada: quem já usava continua com a pasta conectada e com o mesmo
+arquivo, e o cache segue com o prefixo "dt-".
+
+A casa. O repositório passou a ser ErnyBSB/declaro-tempo, com todo o
+histórico e as versões anteriores; o declare-time foi arquivado e
+guarda as issues e os PRs até o #32, que os documentos ainda citam. A
+licença passou a ser a Unlicense — domínio público, como a CC0 de
+antes. E, daqui em diante, o projeto conversa só em português: além
+da tela e dos documentos, também os registros de mudança (commits),
+os pedidos de integração (PRs) e as issues.
+
+O compromisso. Desde a 1.0, o formato dos arquivos (project_design.md,
+5.6) está congelado: só se acrescentam chaves, nunca se renomeia nem
+se reaproveita uma, e nunca se migra arquivo de ninguém.
+
+O que ficou pendente, de propósito. A prova de uso do dia a dia
+terminou, mas a TI ainda não aplicou as permissões NTFS na pasta de
+produção. A 1.0 saiu assim mesmo, por decisão, e a pendência tem issue
+própria (#2 do declaro-tempo). Até ela se fechar, a proteção da pasta
+é só contra uso casual, e valem os cuidados do roteiro da prova: cópia
+diária da pasta de dados e nada de abrir ou editar os arquivos pelo
+Explorador.
 
 A borracha do dia: excluir o que foi declarado hoje (novidade da v0.8)
 ----------------------------------------------------------------------

@@ -770,10 +770,9 @@ nome. Só se marca a *tag* com tudo isto feito:
       NTFS" do roteiro (cópia diária, nada pelo Explorador) valendo até lá.
 - [x] **Texto de finalidade da LGPD** na Ajuda (12.7, issue #17), e o teste de 01
       atualizado (v0.7).
-- [ ] `node testes/rodar.mjs` passando sobre a 1.0 e registrado em `testes/REGISTRO.md`
-      (a v0.7 já passa: 181 conferências, 0 falhas), e conferência à mão em várias
-      abas.
-- [ ] `versao.js` em `1.0` (`versao`, `rotulo`, `atualizado`) e `git tag -a v1.0` no
+- [x] `node testes/rodar.mjs` passando sobre a 1.0 e registrado em `testes/REGISTRO.md`,
+      e conferência à mão em várias abas (feita na prova de uso).
+- [x] `versao.js` em `1.0` (`versao`, `rotulo`, `atualizado`) e `git tag -a v1.0` no
       `main`, com a linha da v1.0 no histórico abaixo.
 
 ### 10.4. Histórico de versões
@@ -788,6 +787,7 @@ nome. Só se marca a *tag* com tudo isto feito:
 | v0.6 | out/2026 | Preparação da 1.0: contrato dos arquivos congelado (5.6) e conferido por `testes/06-contrato.mjs`; recusa de gravar por cima de formato mais novo; testes no navegador no repositório; guia de instalação, permissões, cópia de segurança e publicação na LEIA-ME; lista de publicação da 1.0 (10.3). |
 | v0.7 | out/2026 | Aviso de Privacidade e Proteção de Dados (LGPD) na Ajuda, no lugar do marcador de texto pendente (12.7, #17). |
 | v0.8 | out/2026 | Prova de uso: a declaração pode ser excluída no dia em que foi declarada, mesmo já começada (12.4 revista, #20). |
+| v1.0 | out/2026 | Primeiro uso em produção, no repositório `declaro-tempo`: nome "Declaro Meu Tempo" (12.8 revista), licença Unlicense, prova de uso encerrada; contrato dos arquivos (5.6) congelado. Permissões NTFS pendentes (#2). |
 
 ---
 
