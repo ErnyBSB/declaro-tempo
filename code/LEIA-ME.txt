@@ -1,0 +1,837 @@
+DECLARO MEU TEMPO (versão 1.0, out/26 — PWA em rede)
+====================================================
+
+Este arquivo é a documentação de verdade do programa. Não é uma lista
+de mudanças: é o porquê de cada decisão, escrito para quem vai usar,
+manter ou retomar o aplicativo daqui a um ano sem ninguém por perto
+para perguntar. Cada mudança de comportamento ganha aqui uma seção
+nova, com a troca que foi feita e a limitação admitida.
+
+A referência estruturada — esquemas, tabelas, papéis, roteiro — fica no
+project_design.md, na raiz do repositório. Os dois dizem a mesma coisa
+de jeitos diferentes: lá, para consultar; aqui, para entender.
+
+As seções vêm da mais nova para a mais antiga. Uma seção antiga não é
+apagada quando a decisão muda: a nova diz o que mudou e por quê, e a
+antiga fica como registro do que valia antes.
+
+Versão 1.0: Declaro Meu Tempo, em produção (novidade da v1.0)
+-------------------------------------------------------------
+A 1.0 marca o primeiro uso em produção. Nada mudou no jeito de usar:
+o que muda é o nome, a casa e o compromisso com os arquivos.
+
+O nome. O programa passa a se chamar "Declaro Meu Tempo". O nome
+antigo, "Declaração de disponibilidade", dizia bem o que se declara —
+disponibilidade prevista, não horário cumprido —, e isso continua
+valendo. O novo diz quem declara: a própria pessoa, em primeira
+pessoa, sobre o próprio tempo. Muda no título, no rail, na Ajuda, no
+Sobre e no ícone instalado ("Meu Tempo"). Não muda nenhuma chave
+gravada: quem já usava continua com a pasta conectada e com o mesmo
+arquivo, e o cache segue com o prefixo "dt-".
+
+A casa. O repositório passou a ser ErnyBSB/declaro-tempo, com todo o
+histórico e as versões anteriores; o declare-time foi arquivado e
+guarda as issues e os PRs até o #32, que os documentos ainda citam. A
+licença passou a ser a Unlicense — domínio público, como a CC0 de
+antes. E, daqui em diante, o projeto conversa só em português: além
+da tela e dos documentos, também os registros de mudança (commits),
+os pedidos de integração (PRs) e as issues.
+
+O compromisso. Desde a 1.0, o formato dos arquivos (project_design.md,
+5.6) está congelado: só se acrescentam chaves, nunca se renomeia nem
+se reaproveita uma, e nunca se migra arquivo de ninguém.
+
+O que ficou pendente, de propósito. A prova de uso do dia a dia
+terminou, mas a TI ainda não aplicou as permissões NTFS na pasta de
+produção. A 1.0 saiu assim mesmo, por decisão, e a pendência tem issue
+própria (#2 do declaro-tempo). Até ela se fechar, a proteção da pasta
+é só contra uso casual, e valem os cuidados do roteiro da prova: cópia
+diária da pasta de dados e nada de abrir ou editar os arquivos pelo
+Explorador.
+
+A borracha do dia: excluir o que foi declarado hoje (novidade da v0.8)
+----------------------------------------------------------------------
+Na prova de uso, no primeiro dia, alguém declarou um horário que
+começava e terminava naquele mesmo dia e quis corrigi-lo. Não havia
+como. Excluir só valia para declaração que ainda não começou; encerrar
+só antecipa um fim, e ela já terminava hoje; substituir começa, no
+mínimo, no dia seguinte ao início da atual. E a declaração nova para
+hoje colidia com a errada. O horário de hoje ficava errado até amanhã.
+
+O mesmo valia, com menos alarde, para qualquer declaração que começa no
+passado: um engano de digitação nas datas não tinha borracha nenhuma —
+uma declaração inteira no passado nasce encerrada, sem botão algum.
+
+A regra "o que já começou não se apaga" existe para proteger o que o
+painel já mostrou. Mas uma declaração feita hoje ainda não foi vista
+por ninguém como coisa passada: quem abrir o painel amanhã olhando para
+hoje é que vai contar com ela. Então, a partir da 0.8, a declaração
+pode ser excluída no mesmo dia em que foi declarada, seja ela futura,
+vigente ou já encerrada. A partir do dia seguinte, valem as regras de
+sempre.
+
+"Declarada hoje" é lido do campo criadaEm, que toda declaração grava
+desde a 0.2 — não foi preciso chave nova, nem mexer em arquivo nenhum.
+Um arquivo antigo sem criadaEm não ganha a exceção: sem saber quando a
+declaração foi feita, o programa fica com a regra mais segura. E, como
+toda gravação, a exclusão é conferida contra o arquivo relido, não
+contra a tela.
+
+As ausências continuam com a regra antiga: o caso não apareceu nelas, e
+cada exceção a uma regra de histórico deve chegar com o seu motivo.
+
+O aviso de privacidade (novidade da v0.7)
+-----------------------------------------
+Desde o começo, a Ajuda trazia um aviso de "texto pendente" no lugar da
+finalidade e da base legal do tratamento dos dados, porque esse texto
+não é o programa quem escreve. Na 0.7 ele chegou: o "Aviso de
+Privacidade e Proteção de Dados (LGPD)", na Ajuda, com propósito, base
+legal, acesso aos dados, tempo de guarda e direitos.
+
+Dois dos cinco itens foram ajustados antes de entrar, e vale dizer por
+quê. O rascunho recebido falava em solicitações e em aprovação de
+demandas, que este programa não tem, e dizia que os dados ficavam
+visíveis "apenas" para o autor e a chefia. Não é verdade, e um aviso de
+privacidade não pode prometer mais sigilo do que entrega: no programa,
+leem as declarações o próprio autor, os leitores da unidade e os
+administradores; e na pasta de rede, com as permissões recomendadas,
+todas as pessoas que usam o programa têm leitura nos arquivos. Os dois
+itens passaram a dizer exatamente isso. Os demais — base legal, tempo
+de guarda e direitos — são texto jurídico e entraram como vieram.
+
+Esses dois itens descrevem o programa, e por isso há um teste que os
+confere. Se um dia o programa mudar quem lê o quê — por exemplo,
+restringindo a leitura da pasta —, o aviso tem de mudar na mesma
+versão.
+
+Os testes no navegador
+----------------------
+Logo depois da 0.5, o repositório ganhou uma pasta testes/ com testes
+que abrem o programa num Chrome sem tela e o usam como uma pessoa
+usaria: oficializam uma pasta, cadastram gente, declaram, substituem,
+registram férias, conferem o painel. Rodam com "node testes/rodar.mjs".
+
+O que eles NÃO trocam é o principal: a pasta da rede é simulada com um
+recurso do próprio Chrome (o OPFS) que tem a mesma forma de acesso da
+pasta de verdade. O rede.js que roda nos testes é o mesmo que roda na
+rede, gravando e lendo arquivos de verdade. Só o seletor de pasta e o
+pedido de permissão, que precisariam de alguém clicando, são trocados.
+
+Um teste também falha se aparecer qualquer erro no console da página,
+mesmo que a tela pareça certa: erro calado é defeito esperando a hora.
+
+Cada versão publicada tem a execução dos testes registrada em
+testes/REGISTRO.md: data, ambiente, quantas conferências e quantas
+falhas, com a saída completa guardada ao lado. O primeiro registro é o
+da 0.7, em 22/10/2026: 181 conferências, nenhuma falha.
+
+Os testes usam só o Node — nenhum pacote de npm — e o Node é ferramenta
+de quem mantém o programa, não parte dele: o aplicativo continua
+abrindo com um duplo clique, sem instalar nada. E os testes não
+dispensam a conferência à mão, em várias abas, com pessoas e papéis
+diferentes; eles garantem que o que já funcionava continua funcionando.
+
+Versão 0.5: sem jornada, com ausências (novidade da v0.5)
+---------------------------------------------------------
+Três correções pedidas por quem usou a 0.4 (issue #13).
+
+A jornada saiu. Até a 0.4, toda pessoa marcava na entrada se cumpria 8
+ou 6 horas por dia, e o programa usava isso para pintar de dourado o
+dia cujas declarações não somavam a jornada. A pergunta foi retirada:
+ninguém mais escolhe 8 ou 6 horas. E o dourado saiu junto, porque sem
+jornada não há com o que comparar. Pensou-se em trocá-la por uma
+semana-padrão definida pela administração, unidade por unidade; não
+valia o cadastro a mais, para uma marcação que o programa não usa em
+conta nenhuma.
+
+O que já estava gravado fica onde está. Arquivos da 0.4 têm a jornada
+no cabeçalho e em cada declaração; nada disso é apagado nem migrado —
+só deixa de ser lido. É a regra de sempre: o arquivo de uma pessoa só
+muda quando ela grava algo nele, e mesmo então as chaves que esta
+versão não usa atravessam a gravação intactas.
+
+Uma consequência que convém saber: entrar no programa não grava mais
+nada. Antes, a jornada era gravada na entrada, e o arquivo da pessoa
+nascia ali. Agora ele nasce na primeira declaração ou ausência. Quem
+entrou e não declarou nada continua aparecendo como "sem declaração"
+no painel, como antes — só não tem arquivo.
+
+O crédito "Derivado do Programa de Resultados — COBIB" saiu da janela
+"Sobre o programa". A origem continua registrada onde importa para
+quem mantém o programa: neste arquivo e no project_design.md.
+
+Ausências: férias, licença, recesso, outro
+------------------------------------------
+Em "Meus horários", abaixo das declarações, há agora o registro de
+ausências: escolhe-se o tipo, o primeiro e o último dia, e uma
+observação, se quiser. Os quatro tipos estão no catalogo.js; a chave
+que vai para o arquivo ("ferias", "licenca", "recesso", "outro") nunca
+muda — só o rótulo pode mudar.
+
+Ausência sempre tem último dia. Quem ainda não sabe quando volta
+registra a data prevista e encerra antes, se for o caso. Uma ausência
+sem fim seria uma pessoa que some do painel para sempre por esquecer
+de voltar.
+
+As regras de vida são as mesmas das declarações, pelo mesmo motivo: o
+painel consulta o passado, e o passado não se reescreve. A ausência que
+ainda não começou pode ser excluída; a que está em curso pode ser
+encerrada mais cedo, de hoje em diante; a que já passou fica. Duas
+ausências da mesma pessoa não podem cobrir o mesmo dia.
+
+A ausência NÃO encerra as declarações. Quem tira férias em dezembro
+continua com o horário de sempre declarado de setembro a junho: a
+ausência só diz que, naqueles dias, a pessoa não está. Encerrar e
+redeclarar o horário a cada férias seria trabalho à toa e apagaria a
+continuidade que a linha do tempo mostra.
+
+No painel
+---------
+Numa data, quem está ausente sai da cobertura. A grade continua com as
+mesmas horas e os mesmos dias, e a hora que só o ausente cobria aparece
+como zero — hora descoberta, que é exatamente a informação que a
+ausência traz. Uma primeira versão tirava a pessoa e, com ela, as horas
+que ela cobria; a grade encolhia e o buraco sumia da tela. A nota
+embaixo do gráfico diz quem saiu da conta.
+
+Num mês, ninguém sai da cobertura: uma semana de férias não apaga as
+outras três, e a grade do mês responde "em que horas houve alguém em
+algum momento". A nota diz isso, e quem quiser ver o efeito das
+ausências escolhe uma data.
+
+Há também um indicador "Ausentes", uma tabela de ausências com o seu
+próprio CSV, a marca "ausente: férias" ao lado da declaração de quem
+está fora, e as ausências na linha do tempo, em raias próprias e com
+textura — nem verde, que é declaração vigente, nem o cinza liso das
+demais declarações.
+
+A versão 0.4 completa o Painel com três gráficos: a cobertura por hora
+e dia da semana, as horas por semana de cada pessoa e a linha do tempo
+das declarações.
+
+Os gráficos (novidade da v0.4)
+------------------------------
+Os três ficam no Painel, entre os indicadores e a tabela, e saem do
+MESMO recorte que a tabela e o CSV: mesma data ou mês, mesma unidade,
+mesma pessoa. Se um gráfico e a tabela discordarem, é defeito. Os
+gráficos servem para achar onde olhar; o número exato está na tabela.
+
+Cobertura por hora e dia da semana. Uma grade com as horas nas linhas
+e os dias nas colunas; cada célula diz quantas PESSOAS declararam estar
+disponíveis naquela hora. Pessoas, e não declarações: quem tem duas
+declarações na mesma hora (a antiga e a nova, num mês em que trocou de
+horário) conta uma vez. O zero aparece escrito, num cinza diferente de
+todos os verdes, porque é a informação mais importante da grade: hora
+descoberta. Passar o ponteiro numa célula mostra quem a cobre.
+
+Horas por semana, por pessoa. Uma barra por pessoa, em ordem
+alfabética; um traço marca a jornada × 5, e a barra que não bate com
+ele sai em dourado. "Ordenar por volume" existe, mas não é o padrão:
+ordenar por horas transforma o gráfico num ranking que o dado não
+sustenta, porque ninguém confere se as horas declaradas foram
+cumpridas. Como o indicador de horas, este gráfico só aparece numa
+data, e não num mês.
+
+Linha do tempo. Uma faixa por pessoa no eixo das datas, com os
+períodos declarados: os buracos entre uma declaração e outra, e as
+sobreposições. É o gráfico que responde à parte "períodos" do nome do
+programa. A janela é o mês escolhido, ou três meses para cada lado da
+data de referência. Declarações que valem ao mesmo tempo (a manhã e a
+tarde de uma jornada partida) ficam uma sob a outra, em vez de uma
+esconder a outra. Borda reta quer dizer que a declaração continua além
+da janela.
+
+Por que sem biblioteca de gráficos
+----------------------------------
+O plano era trazer do projeto de origem o mesmo echarts.min.js, uma
+compilação própria do ECharts. Ao abri-lo, o arquivo se mostrou um
+bloco de 533 KB sem o cabeçalho da licença (o ECharts é Apache-2.0, e
+redistribuí-lo pede o aviso) e sem registro de qual versão era. Para o
+que este programa desenha — uma grade, que é uma tabela, e barras —, o
+custo não se pagava: meio megabyte a mais no cache offline de cada
+computador, e um arquivo que ninguém saberia atualizar.
+
+Em HTML, o gráfico é texto de verdade: o leitor de tela lê os números
+da grade, a impressão sai igual à tela, a dica aparece também no foco
+do teclado, e nada depende de rede. E some uma regra herdada que só
+existia por causa da biblioteca: desenhar o gráfico depois que o
+contêiner fica visível, porque o ECharts media altura zero no que
+estava oculto.
+
+As cores seguem o resto do programa. Verde continua sendo "vigente": a
+cobertura usa uma rampa de um só verde, do claro ao escuro, e a linha
+do tempo pinta de verde o que vale na data. Dourado continua sendo
+divergência, e só isso. A rampa da cobertura foi conferida com um
+validador, e não a olho: os quatro tons ficam em ordem de claridade,
+com degraus visíveis entre eles, e o mais claro ainda se distingue do
+branco — senão "uma pessoa" se confundiria com "ninguém". O número
+dentro da célula vai em tinta ou em branco, conforme o fundo, sempre
+acima do contraste mínimo de leitura.
+
+O Painel (novidade da v0.3)
+---------------------------
+É uma tela só, para leitores e administradores. A diferença entre os
+dois é o recorte: o administrador vê todas as unidades; o leitor, só as
+da lista dele, e o filtro de unidade só oferece essas. Quem só declara
+não vê o Painel.
+
+A pergunta que o painel responde é "em quando?", porque toda declaração
+vale num intervalo. O padrão é HOJE: entram as declarações vigentes na
+data escolhida. A alternativa é um MÊS inteiro: entram as que valem em
+qualquer dia dele.
+
+Quatro números abrem a tela:
+
+- pessoas cadastradas, pela unidade ATUAL no cadastro;
+- com declaração no recorte;
+- sem declaração — e um clique mostra quem;
+- horas por semana declaradas, no total e em média.
+
+As horas por semana só aparecem numa data, e não num mês. No mês, a
+declaração antiga e a nova de quem substituiu o horário valem as duas,
+em dias diferentes, e somá-las daria a essa pessoa uma semana com o
+dobro das horas.
+
+Sem declaração se conta pelo cadastro
+-------------------------------------
+"Sem declaração" sai da lista de pessoas cadastradas, e não das
+declarações. Uma lista feita só de quem declarou pareceria completa
+justamente onde falta gente.
+
+Dois casos não entram como "sem declaração", de propósito:
+
+- quem tem o arquivo ILEGÍVEL aparece na lista com essa marca. Não ter
+  declarado e ter um arquivo danificado são problemas diferentes, com
+  soluções diferentes;
+- quem mudou de unidade e ainda não redeclarou tem declaração — só que
+  com a unidade antiga no carimbo. Essa pessoa conta como "com
+  declaração", e o indicador avisa quantas estão nesse caso, porque a
+  declaração dela não aparece na tabela da unidade nova.
+
+De quem é cada declaração
+-------------------------
+A tabela entra pela unidade CARIMBADA na declaração, e não pela unidade
+atual da pessoa: o histórico de quem mudou de unidade fica com a
+unidade em que foi feito, como a jornada.
+
+E cada declaração é atribuída ao DONO DO ARQUIVO, e não ao nome escrito
+dentro dela. O dono de declaracoes/ana-beatriz-nunes.json é quem, no
+cadastro, tem esse arquivo. O arquivo é JSON comum, e um nome trocado à
+mão lá dentro não pode fazer uma declaração aparecer como de outra
+pessoa.
+
+Declaração com forma inesperada — editada à mão, ou gravada por uma
+versão futura — fica fora das contas e da tela, em vez de derrubar o
+painel inteiro. Ela continua no arquivo. Na tela "Meus horários", a
+própria pessoa é avisada de quantas foram ignoradas.
+
+Arquivos que pedem atenção
+--------------------------
+Só para administradores, no fim do painel: arquivos da pasta
+declaracoes/ que não pertencem a ninguém do cadastro (de quem foi
+removido, ou de um nome corrigido) e arquivos que não puderam ser
+lidos. O programa não apaga nem corrige nenhum deles — mostra, para que
+não sumam calados.
+
+O CSV
+-----
+Uma linha por declaração da tabela, com as colunas na ordem do esquema
+e os dias por extenso ("Seg Ter Qua"). Separador ";" e marca de UTF-8
+no começo do arquivo, para o Excel em português abrir com acentos e
+colunas certos, sem assistente de importação.
+
+A observação é texto livre, e o Excel trata como fórmula qualquer
+célula que comece com "=", "+", "-" ou "@". Uma observação escrita
+"=HIPERLINK(...)" viraria um link clicável na planilha de quem baixou.
+Por isso essas células ganham um apóstrofo na frente: o Excel mostra o
+texto como texto.
+
+O painel relê a pasta a cada vez que se entra nele, e no "Atualizar
+dados da rede": as declarações são de outras pessoas e mudam sem que
+esta tela saiba.
+
+Meus horários: declarar (novidade da v0.2)
+------------------------------------------
+Uma declaração é um período, os dias da semana e uma faixa de horas:
+"de 01/09 a 31/12, de segunda a sexta, das 9h às 15h". O último dia
+pode ficar em branco, e aí ela vale até nova declaração — horário de
+trabalho costuma ser assim, e obrigar uma data inventada faria a pessoa
+escolher 31/12 e o horário sumir em janeiro.
+
+O total aparece enquanto se digita ("6h por dia · 30h por semana"),
+porque somar as próprias horas para conferir se acertou não é trabalho
+de quem preenche.
+
+A jornada e a unidade vão gravadas DENTRO de cada declaração, como
+retrato do momento. Sem isso, um horário de março seria conferido pela
+jornada de outubro, e uma mudança de jornada faria declarações antigas
+passarem a divergir sozinhas.
+
+O que a tela recusa, e por quê
+------------------------------
+Cada recusa tem a sua frase, e nenhuma é silenciosa:
+
+- faixa que termina antes de começar: a tela explica que jornada que
+  passa da meia-noite se declara como dois horários. Aceitar 22h às 6h
+  daria um total negativo sem ninguém perceber;
+- nenhum dia da semana marcado;
+- último dia anterior ao primeiro;
+- dias marcados que não caem dentro do período — de sábado a domingo,
+  marcando só segunda, não haveria dia nenhum em que a declaração
+  valesse;
+- colisão com outra declaração da mesma pessoa, citando qual e em que
+  dias.
+
+Duas declarações só colidem quando as TRÊS coisas se cruzam: o período,
+o dia da semana e a hora — e o dia em comum precisa de fato ocorrer no
+trecho em que os dois períodos se sobrepõem. Barrar só por período
+tornaria "uma faixa por declaração" inútil: a manhã e a tarde do mesmo
+semestre colidiriam. Faixas que se encostam (9h–15h e 15h–17h) não
+colidem.
+
+A colisão é conferida contra o arquivo RELIDO na hora de gravar, e não
+contra a lista que a tela mostrou. Duas abas abertas da mesma pessoa
+não conseguem, assim, gravar duas declarações que se cruzam.
+
+Encerrar, substituir, excluir — e nunca editar
+----------------------------------------------
+Uma declaração que já começou não se edita. O painel consulta o passado
+mês a mês, e editar reescreveria o que ele já mostrou. O que se faz com
+cada uma depende de quando ela vale:
+
+- VIGENTE pode ser encerrada: ganha um último dia, que vai de hoje em
+  diante e só antecipa o fim que ela já tinha. Encerrar ontem seria
+  reescrever ontem.
+- VIGENTE pode ser substituída: é o caminho para trocar de horário. O
+  formulário abre com o horário atual, a pessoa muda o que mudou, e uma
+  só gravação encerra a atual na véspera e cria a nova. A nova começa
+  hoje ou depois — o que já valeu fica como valeu.
+- FUTURA, que ainda não começou, pode ser excluída: nada do que o
+  painel mostrou se perde.
+- ENCERRADA fica como está.
+
+Pode-se declarar um período que começou no passado: quem passa a usar
+o programa em outubro tem um horário que vale desde setembro. A tela
+avisa, antes de gravar, que uma declaração assim só poderá ser
+encerrada, e não excluída — um erro de digitação ali não tem borracha.
+
+A situação (vigente, futura, encerrada) nunca é gravada: é calculada
+contra o dia de hoje sempre que a tela abre. Uma declaração vigente
+ontem pode amanhecer encerrada sem que ninguém toque no arquivo.
+
+Quando a faixa não fecha com a jornada (até a v0.4 — ver a v0.5)
+-----------------------------------------------------------------
+Alguém com jornada de 8h que declara das 8h às 14h está declarando 6h.
+Pode estar certo — jornada reduzida naquele período — ou pode ter errado
+a digitação, e o programa não tem como distinguir uma coisa da outra.
+Então ele mostra, em dourado, e não corrige nada.
+
+A comparação é com o DIA, e não com cada declaração. A jornada partida
+(9h–12h e 14h–17h) são duas declarações que, sozinhas, diferem da
+jornada, e juntas fecham as 8h; marcar as duas em dourado ensinaria a
+ignorar o dourado. Uma declaração só sai marcada quando, em algum dia
+seu, a soma de tudo o que vale junto com ela não bate com a jornada.
+
+A semana de hoje
+----------------
+Abaixo das declarações, uma grade em HTML — horas nas linhas, dias nas
+colunas — mostra o que está valendo hoje. Não é gráfico: é para a pessoa
+conferir num relance se a semana ficou como ela pensa. Sábado e domingo
+só aparecem se alguma declaração os usar. A hora conta inteira, como no
+mapa de cobertura que virá no painel: quem sai às 12h30 aparece na hora
+das 12h. O total de cada dia sai em dourado quando difere da jornada.
+
+Se o arquivo da pessoa estiver ilegível, a tela diz isso ao abrir e
+desliga o botão de declarar, em vez de deixar a pessoa preencher tudo e
+descobrir na hora de gravar.
+
+As janelas de senha e de encerramento usam as mensagens do programa, e
+não os balões do navegador: o balão some ao primeiro clique e não diz o
+que fazer.
+
+Versão 0.1: entrar, oficializar e cadastrar (novidade da v0.1)
+--------------------------------------------------------------
+A entrada tem as duas etapas herdadas do projeto de origem — conectar a
+pasta da rede, e depois dizer quem se é —, com três diferenças que
+precisam estar explicadas.
+
+Não existe mais um "Administrador" de nome fixo, nem a senha inicial
+"adm". No projeto de origem, a pasta virgem era oficializada por uma
+conta chamada Administrador, com senha "adm" até alguém trocá-la. As
+duas coisas eram iguais em toda instalação e estavam escritas no
+código, que é público: qualquer um que o lesse entraria como
+administrador numa pasta recém-oficializada, antes da troca. Aqui,
+quem oficializa a pasta digita o próprio nome, a própria unidade e uma
+senha, e vira o primeiro administrador. O config.json nasce nesse ato,
+já com uma pessoa de verdade dentro.
+
+Administrador sempre tem senha. Dar o papel a alguém sem senha pede a
+senha na mesma hora, e as duas coisas vão juntas na mesma gravação: não
+existe um instante em que o arquivo tenha um administrador sem senha.
+Pela mesma razão, a senha de um administrador pode ser trocada, mas não
+removida, e o último administrador não pode perder o papel nem sair do
+cadastro — senão ninguém mais entraria na Administração.
+
+A jornada (8 ou 6 horas) é pedida a todos, inclusive a leitores e
+administradores, porque todos declaram. Ela é gravada no arquivo da
+própria pessoa ANTES de a identidade travar: se a pasta recusar a
+escrita, a pessoa vê o motivo ainda na entrada, e não descobre o
+problema na primeira declaração.
+
+Os papéis vêm do cadastro, e só dele. A identidade lembrada neste
+computador guarda o nome e a jornada, e não o papel: quem foi promovido
+a leitor, ou deixou de ser administrador, passa a ver a tela certa no
+próximo "Atualizar dados da rede", sem precisar sair e entrar.
+
+Dois administradores ao mesmo tempo
+-----------------------------------
+Com um administrador só, o config.json tinha um escritor só. Com vários,
+dois podem estar com a Administração aberta ao mesmo tempo, e o
+segundo a salvar apagaria em silêncio o que o primeiro fez — cada um
+grava o cadastro inteiro, do jeito que estava quando a tela abriu.
+
+Por isso, antes de gravar, o programa relê o config.json e compara a
+data de atualização com a que leu ao abrir a tela. Se forem diferentes,
+outra pessoa gravou no meio do caminho: nada é gravado, e a tela pede
+"Atualizar dados da rede" e que a alteração seja refeita. Refazer uma
+alteração é chato; perder a de outra pessoa sem ninguém saber é pior.
+
+A conferência não fecha a porta inteira. Entre a releitura e a escrita
+passam milissegundos, e duas gravações exatamente nesse intervalo ainda
+se sobrepõem. Fechar isso exigiria um servidor que tranque o arquivo,
+que é justamente o que este programa não tem.
+
+A mesma ideia vale para a oficialização: ela só grava se, no momento da
+gravação, continuar não existindo config.json na pasta.
+
+O que a gravação não apaga
+--------------------------
+Toda gravação no arquivo de uma pessoa lê o arquivo inteiro, muda o que
+precisa e regrava o conjunto — inclusive as chaves que esta versão não
+conhece. Uma versão mais nova pode acrescentar algo ao arquivo (as
+chaves "realizados" e "ausencias" já estão reservadas); se alguém abrir
+o arquivo com esta versão, mais antiga, e mudar a jornada, o que a
+versão nova gravou continua lá. O mesmo vale para o config.json.
+
+Remover uma pessoa do cadastro não apaga o arquivo dela: ele continua
+na pasta, desligado do cadastro. Apagar declarações de alguém não é
+coisa que um clique na Administração deva fazer. O painel da v0.3 vai
+mostrar esses arquivos numa seção própria, para que não sumam calados.
+
+Nomes que cairiam no mesmo arquivo
+----------------------------------
+O arquivo de cada pessoa leva o nome dela sem acentos, em minúsculas e
+com hífens: "Ana Beatriz Nunes" grava em ana-beatriz-nunes.json. Dois
+nomes que só diferem em acento ou em maiúsculas cairiam no mesmo
+arquivo, e as declarações de um apagariam as do outro. O cadastro recusa
+o segundo nome e diz com quem ele colide; um sobrenome a mais resolve.
+
+Detalhes que parecem pequenos
+-----------------------------
+A senha nova é digitada numa janela própria, com dois campos mascarados,
+e não na caixa de pergunta do navegador, que mostra em claro o que se
+digita para quem estiver olhando a tela.
+
+Os avisos comuns da tela deixaram de ser verdes. No projeto de origem
+verde era "aprovado"; aqui ele significa "declaração vigente", e um
+"senha atualizada" verde diria uma coisa que não é. Pelo mesmo motivo,
+as etiquetas de papel e de senha na Administração são neutras.
+
+O ícone é novo — um calendário com uma faixa de dias coberta — porque o
+do projeto de origem carregava a identidade de outro programa.
+
+A tela "Meus horários" existe desde já, mostrando a identidade em uso e
+onde fica o arquivo da pessoa, para que a primeira coisa a ver depois
+de entrar não seja uma tela vazia.
+
+O que o programa é
+------------------
+Cada pessoa declara, ela mesma, em que horários e em que períodos
+estará disponível no ambiente de trabalho: "de 01/09 a 31/12, de
+segunda a sexta, das 9h às 15h". Quem responde por uma área vê as
+declarações da sua área; quem administra vê o conjunto, em tabela e em
+gráficos: quem cobre cada hora de cada dia da semana, quantas horas por
+semana cada pessoa declarou e quem ainda não declarou nada.
+
+Ele nasce do Programa de Resultados — COBIB, onde isto era uma seção
+chamada "Horários", dentro de um programa maior de metas e pontos. Aqui
+a seção vira o programa todo, e o resto fica para trás.
+
+O que o programa NÃO é
+----------------------
+Precisa estar dito com todas as letras, porque a confusão é a primeira
+que aparece: isto não é ponto. Ninguém marca entrada nem saída, e o
+programa não confere se o que foi declarado foi cumprido — nem tem como
+conferir. É previsão de disponibilidade.
+
+Pela mesma razão, a declaração não alimenta métrica nenhuma, não passa
+por aprovação e não vira ranking. Um horário declarado que contasse
+para desempenho viraria promessa que o programa não tem como cobrar.
+Daí também o nome: "Declaração de disponibilidade", e não "de horários"
+— o que se declara é quando se espera estar, não quando se esteve.
+
+Por que sem servidor
+--------------------
+O aplicativo roda abrindo o index.html de uma pasta. Os dados ficam em
+arquivos JSON numa pasta de rede compartilhada, lidos e gravados pelo
+próprio navegador (Chrome ou Edge). Não há servidor, banco de dados,
+instalação de pacotes nem nada buscado na internet.
+
+Não é economia de esforço: é que, no serviço público, pedir um servidor
+costuma levar mais tempo do que construir o programa. Uma pasta de rede
+quase todo órgão já tem. O preço está na seção "Limitações", e foi
+aceito de propósito.
+
+Um arquivo, um único escritor
+-----------------------------
+Sem banco de dados, dois navegadores gravando o mesmo arquivo ao mesmo
+tempo apagam o trabalho um do outro em silêncio. A saída herdada do
+projeto de origem é não deixar isso acontecer por construção: cada
+pessoa grava SÓ o próprio arquivo, declaracoes/<nome>.json, e ninguém
+mais grava nele — nem quem administra.
+
+O config.json, com o cadastro, é a única exceção parcial: só
+administradores o gravam, mas pode haver mais de um. Por isso, antes de
+gravar, o programa relê o arquivo e confere se alguém o alterou desde
+que a tela foi aberta. Se alterou, não grava e pede para atualizar
+antes. Duas gravações no mesmo instante ainda podem se sobrepor; é
+raro, e está admitido.
+
+Três papéis, que se somam
+-------------------------
+Pessoa: todo mundo que está no cadastro. Declara os próprios horários,
+e só os próprios.
+
+Leitor: o responsável pela área de trabalho e as pessoas que ele
+indicar. Vê o painel das unidades que lhe forem atribuídas — pode ser
+mais de uma, e pode haver vários leitores por unidade.
+
+Administrador: vê tudo e mantém o cadastro. Pode haver vários.
+
+Os papéis se somam, e não se excluem: a chefe de uma seção também tem
+horário, e declará-lo não deveria exigir uma segunda identidade. Quem
+é leitor ou administrador entra uma vez só e vê as duas coisas.
+
+Uma ressalva honesta: o recorte do leitor por unidade é de tela. Na
+pasta da rede, todos têm leitura em todos os arquivos — é assim que o
+painel consegue montar o conjunto. Quem abrir os arquivos fora do
+programa lê tudo.
+
+As decisões que vieram antes do código
+--------------------------------------
+O formato dos arquivos é um contrato com gente de verdade: depois que
+alguém gravar uma declaração na pasta, nenhuma chave muda de nome. Por
+isso três perguntas foram respondidas antes da primeira linha:
+
+Previsão, e não realização. Declara-se "de setembro a dezembro, de
+segunda a sexta, das 9h às 15h", e não "no dia 14 estive aqui das 9h às
+12h". A segunda forma se aproxima de registro de ponto, que este
+programa não é. Se um dia for pedida, entra no mesmo arquivo com chave
+própria (realizados), já reservada, sem tocar no que existe.
+
+Uma faixa por declaração. Quem trabalha das 9h às 12h e das 14h às 17h
+declara duas vezes, uma para cada turno. Foi escolha entre um
+formulário simples para o caso comum e uma lista de faixas que pesaria
+em todo mundo para servir a alguns. Duas declarações só colidem quando
+período, dia da semana e hora se cruzam ao mesmo tempo. Turno que passa
+da meia-noite é recusado, e a tela diz por quê.
+
+Encerrar, excluir, substituir — e nunca editar. Uma declaração que
+ainda não começou pode ser excluída. Uma que está valendo pode ser
+encerrada, isto é, ganhar data de fim. Uma que já começou não se edita,
+porque editar reescreveria o passado que o painel consulta mês a mês.
+Mudar de horário é substituir: encerrar a atual na véspera e declarar a
+nova, as duas coisas numa gravação só.
+
+O lugar único da versão
+-----------------------
+A versão é escrita num arquivo só, o versao.js, e em nenhum outro
+lugar. A etiqueta da tela, a janela "Sobre" e a chave do cache offline
+derivam dele. No projeto de origem o número já esteve em três lugares,
+e bastava esquecer um para a tela anunciar uma versão enquanto o
+navegador servia outra.
+
+Publicar uma versão é mexer no versao.js e marcar a tag correspondente
+no repositório. A numeração é 0.x enquanto o programa não for usado com
+dados reais; a 1.0 marca o primeiro uso em produção, e a partir dela o
+formato dos arquivos não muda mais de nome. Esta 0.0 é o repositório
+antes do código e não ganha tag.
+
+A data de atualização no versao.js é preenchida à mão. Buscá-la na
+internet contradiria o motivo de o programa existir: funcionar numa
+máquina que só enxerga a pasta da rede.
+
+O que nunca vai para o repositório
+----------------------------------
+O código mora num repositório PÚBLICO. A regra é curta:
+
+  NOME DE PESSOA, SENHA (mesmo em hash), CADASTRO E DECLARAÇÃO NÃO
+  SÃO VERSIONADOS. NUNCA.
+
+As pessoas de verdade ficam no config.json da pasta da rede, gravado
+por um administrador pelo painel. O catalogo.js do repositório é só
+SEMENTE: unidades vazias, nenhuma senha. Ele continua versionado porque
+o index.html o carrega pelo nome; sem ele, um clone novo abriria em
+branco. O arquivo fica; o que sai dele são as pessoas.
+
+O .gitignore é a grade de proteção: barra o config.json, qualquer pasta
+declaracoes/, as pastas de teste (pasta-teste/, dados/, teste*/) e
+arquivos *.local.js. Sem ele, uma pasta de teste com dados reais
+entraria num "git add -A" sem aviso nenhum.
+
+Exemplos, capturas de tela e testes usam um elenco inventado: Helena
+Barros, Ana Beatriz Nunes, Carlos Eduardo Prado, Marina Duarte e
+Roberto Aguiar.
+
+PARA QUEM VAI INSTALAR E MANTER
+===============================
+As seções acima explicam por que o programa é como é. As de baixo
+dizem como pô-lo para funcionar numa organização e como cuidar dele
+depois. Valem para a 1.0 em diante.
+
+Duas pastas, e não uma
+----------------------
+O programa e os dados moram em lugares separados, lado a lado, dentro
+de uma pasta de rede administrativa, compartilhada e com permissões
+NTFS:
+
+  \\SERVIDOR\PastaAdministrativa\
+    code\                 o PROGRAMA
+      index.html          o que as pessoas abrem
+      (e os demais arquivos da pasta code/ do repositório)
+    Compartilhamento\     os DADOS
+      config.json         cadastro, papéis, senhas e selo
+      declaracoes\        um arquivo por pessoa
+
+- code\ é uma cópia da pasta code/ de uma versão publicada. É dela que
+  as pessoas abrem o index.html, e ninguém a conecta na tela de
+  entrada;
+- Compartilhamento\ é a pasta que cada pessoa conecta em "Conectar
+  pasta". O programa não depende do nome: o que a identifica é o selo
+  gravado no config.json quando ela é oficializada.
+
+Separadas, uma atualização do programa nunca encosta nos dados, e uma
+cópia de segurança dos dados não precisa levar o programa junto. (Os
+nomes "PastaAdministrativa" e "SERVIDOR" são exemplos; "code" e
+"Compartilhamento" são os nomes adotados — ver project_design.md, 4.2.)
+
+Instalar, passo a passo
+-----------------------
+1. Na pasta administrativa, copie a pasta code/ de uma versão
+   publicada para code\.
+2. No code\catalogo.js, troque o exemplo de PASTA_REDE pelo caminho
+   real de Compartilhamento\ (é só o texto que a tela mostra como
+   orientação) e atualize CATALOGO_ATUALIZADO.
+3. Crie a pasta Compartilhamento\, vazia, ao lado de code\, e aplique
+   as permissões da seção seguinte.
+4. Quem vai administrar abre code\index.html, conecta
+   Compartilhamento\ e escolhe "Oficializar a pasta": informa o próprio
+   nome, a unidade e uma senha, e vira o primeiro administrador.
+5. Na Administração, cadastre as unidades, as pessoas, os leitores (com
+   as unidades de cada um) e, se for o caso, outros administradores e
+   senhas.
+6. Avise as pessoas: cada uma abre code\index.html, conecta
+   Compartilhamento\ uma vez em cada computador e escolhe o próprio
+   nome.
+
+Aberto com dois cliques no index.html (endereço file://), tudo
+funciona. Para instalar como aplicativo e usar sem rede, o programa
+tem de ser servido por HTTPS — numa intranet sem HTTPS, o navegador nem
+oferece o acesso à pasta. Nesse caso, prefira o duplo clique.
+
+Permissões das pastas
+---------------------
+O programa foi desenhado para caber nas permissões do Windows (NTFS):
+cada arquivo tem um só escritor. A receita abaixo é o ponto de partida;
+CONFIRA COM A ÁREA DE TI numa pasta de teste, com uma pessoa comum e
+um administrador, antes de usar com dados reais — é para isso que
+existe a prova de uso (fase 5 do project_design.md). O roteiro da
+prova, no repositório (prova-de-uso/ROTEIRO.md), traz os comandos
+icacls que aplicam esta receita e a tabela de testes para conferi-la.
+
+- Na pasta administrativa: todos leem e listam.
+- Em code\: todos leem e executam; só quem publica versões modifica.
+  Uma cópia do programa alterada por uma pessoa comum serviria a todos
+  um index.html que ninguém revisou.
+- Em Compartilhamento\: todos leem; os administradores do programa
+  modificam. É lá que eles gravam o config.json.
+- Em Compartilhamento\declaracoes\: todos leem, listam e criam
+  arquivos (só nesta pasta); o "Criador proprietário" modifica (só os
+  arquivos). Assim cada pessoa cria o próprio arquivo na primeira
+  declaração e, daí em diante, só ela o altera.
+
+Um detalhe que pega quem configura pela primeira vez: o Chrome não
+grava por cima do arquivo diretamente. Ele escreve numa cópia
+temporária ao lado (nome-do-arquivo.crswap) e depois a põe no lugar.
+Por isso quem grava precisa poder CRIAR arquivos na pasta, e não só
+modificar o próprio. Se a conexão diz que a pasta abriu só para
+leitura, ou se a primeira gravação falha, é aqui que se procura.
+
+O que a receita não impede: como todos podem criar arquivos em
+declaracoes/, alguém poderia criar o arquivo de outra pessoa antes
+dela. O painel atribui cada arquivo pelo nome; nas propriedades do
+arquivo, o Windows mostra quem é o proprietário de verdade.
+
+Cópia de segurança e restauração
+--------------------------------
+Copie Compartilhamento\ inteira — config.json e declaracoes\ — com a
+frequência que a organização usa para outros arquivos de trabalho. Se
+o servidor oferece "versões anteriores" do Windows, elas servem.
+
+Quando um arquivo se danifica, o programa NÃO grava por cima: o
+config.json ilegível impede a entrada de todos, e o arquivo ilegível de
+uma pessoa desliga só as gravações dela. Nada se perde enquanto o
+arquivo bom não volta. Para restaurar, ponha a cópia boa no lugar do
+arquivo danificado e use "Atualizar dados da rede". Não conserte o JSON
+à mão num editor de texto, a não ser para restaurar uma cópia: uma
+vírgula a mais é o que faz um arquivo ficar ilegível.
+
+Publicar uma versão nova
+------------------------
+1. Troque, no versao.js, a versao, o rotulo e a data em atualizado.
+2. Marque a tag correspondente no repositório (v1.1, v1.2…).
+3. Copie a pasta code/ nova por cima de code\, conservando o
+   catalogo.js da organização — ele tem o caminho real de
+   Compartilhamento\ e, se alguém o editou, a data da edição.
+   Compartilhamento\ não é tocada.
+4. As pessoas recebem a versão nova ao reabrir o programa. Quem tiver
+   instalado como aplicativo pode precisar fechar e abrir de novo.
+
+Publicar sem trocar a versão no versao.js faz quem já abriu o programa
+continuar recebendo a anterior, guardada no cache.
+
+Antes de publicar, quem mantém o programa roda os testes
+("node testes/rodar.mjs") e confere a tela à mão.
+
+O formato dos arquivos não muda
+-------------------------------
+A partir da 1.0, as chaves gravadas nos arquivos estão congeladas (a
+lista está no project_design.md, seção 5.6). Uma versão nova pode
+ACRESCENTAR chaves, nunca trocar o nome ou o sentido das que existem,
+e nunca reescreve arquivos para "atualizá-los". Se um dia o formato
+precisar mudar de verdade, ele passa a 2, e esta versão — a 1.x — já
+sabe recusar gravar por cima de um arquivo de formato mais novo que
+não entende, em vez de apagar o que ele diz.
+
+Limitações assumidas desde o início
+-----------------------------------
+- Só funciona no Chrome e no Edge, por causa do acesso à pasta.
+- Não há tempo real: "Atualizar dados da rede" relê os arquivos.
+- Cada pessoa aponta a pasta uma vez em cada computador.
+- Tudo é autodeclarado: nem horário nem ausência são conferidos.
+- O mapa de cobertura não conhece feriados, e conta a hora inteira
+  (quem sai às 12h30 conta na hora das 12h). Ausências só saem da
+  conta num recorte por data, não num mês.
+- Sem as permissões NTFS recomendadas, a proteção é só contra uso
+  casual.
+- Publicar sem trocar a versão no versao.js continua servindo a
+  anterior, por causa do cache.
+
+O que ainda está em aberto
+--------------------------
+O aviso de privacidade está na Ajuda desde a 0.7, e a prova de uso do
+dia a dia terminou em 26/10/2026. O que falta são as permissões NTFS
+na pasta de produção, aplicadas e conferidas pela TI (issue #2 do
+repositório declaro-tempo). Até lá valem os cuidados do roteiro da
+prova: cópia diária da pasta de dados e nada de mexer nos arquivos
+pelo Explorador.
