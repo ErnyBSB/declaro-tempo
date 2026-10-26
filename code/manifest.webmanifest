@@ -1,6 +1,6 @@
 {
-  "name": "Declaração de disponibilidade",
-  "short_name": "Disponibilidade",
+  "name": "Declaro Meu Tempo",
+  "short_name": "Meu Tempo",
   "description": "Cada pessoa declara em que horários e períodos estará disponível no ambiente de trabalho; leitores e administradores veem o conjunto.",
   "lang": "pt-BR",
   "start_url": "./index.html",

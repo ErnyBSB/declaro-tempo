@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Declaração de disponibilidade</title>
+<title>Declaro Meu Tempo</title>
 <meta name="description" content="Cada pessoa declara em que horários e períodos estará disponível no ambiente de trabalho; leitores e administradores veem o conjunto.">
 <!-- O manifesto NÃO entra aqui: ele é criado por código, no fim da página,
      junto com o registro do service worker e sob a mesma condição de
@@ -58,9 +58,9 @@ button{font-family:inherit}
 .rail{flex:0 0 244px; background:var(--rail); color:var(--rail-texto);
   display:flex; flex-direction:column; position:sticky; top:0; height:100vh}
 .rail-topo{padding:22px 20px 18px; border-bottom:1px solid var(--rail-linha)}
-/* O nome vai por extenso, em duas linhas: o espaço entre "Declaração" e
-   "de" é inseparável no HTML, para a quebra cair sempre antes de
-   "disponibilidade" e nunca deixar o "de" sozinho. */
+/* O nome vai por extenso: o espaço entre "Meu" e "Tempo" é inseparável
+   no HTML, para que, se precisar quebrar, a quebra caia depois de
+   "Declaro" e nunca deixe o "Tempo" sozinho na segunda linha. */
 .marca{display:block; font-family:var(--serif); font-size:22px; line-height:1.12;
   color:#F9FBF9}
 .marca-sub{display:flex; align-items:center; gap:8px; margin-top:8px; flex-wrap:wrap}
@@ -405,7 +405,7 @@ dialog h2{font-family:var(--serif); font-weight:400; font-size:21px; margin:0 0 
      Administração só de administradores. -->
 <nav class="rail">
   <div class="rail-topo">
-    <span class="marca">Declaração&nbsp;de disponibilidade</span>
+    <span class="marca">Declaro Meu&nbsp;Tempo</span>
     <div class="marca-sub">
       <!-- Preenchida a partir de APP.rotulo (versao.js). Vazia no HTML de
            propósito: uma cópia escrita aqui seria um segundo lugar a
@@ -868,7 +868,7 @@ dialog h2{font-family:var(--serif); font-weight:400; font-size:21px; margin:0 0 
   <div class="corpo">
     <div class="ajuda">
       <div class="cartao">
-        <h2>O que é a Declaração de disponibilidade</h2>
+        <h2>O que é o Declaro Meu Tempo</h2>
         <div style="margin-top:12px">
           <p>Cada pessoa declara, ela mesma, em que horários e em que períodos estará
             disponível no trabalho — por exemplo, “de 01/09 a 31/12, de segunda a sexta, das
@@ -1025,12 +1025,12 @@ dialog h2{font-family:var(--serif); font-weight:400; font-size:21px; margin:0 0 
 
 <!-- ====================== JANELAS ====================== -->
 <dialog id="dlgSobre" aria-labelledby="sobreTitulo">
-  <h2 id="sobreTitulo">Declaração de disponibilidade</h2>
+  <h2 id="sobreTitulo">Declaro Meu Tempo</h2>
   <p class="dica" id="sobreVersao" style="margin:0"></p>
   <div class="sobre-corpo">
     <p>Cada pessoa declara em que horários e períodos estará disponível no ambiente de
       trabalho. Previsão de disponibilidade, não registro de ponto.</p>
-    <p>Licença livre: Creative Commons CC0 1.0 (domínio público).</p>
+    <p>Licença livre: Unlicense (domínio público).</p>
     <p id="sobreAtualizado"></p>
     <p id="sobreCatalogo"></p>
     <p>Disponível no GitHub:<br><a id="sobreLink" target="_blank" rel="noopener"></a></p>

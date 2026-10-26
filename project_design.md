@@ -1,4 +1,4 @@
-# Declaração de disponibilidade
+# Declaro Meu Tempo
 ## Relatório de Projeto
 ### Aplicação Web Progressiva (PWA) *client-side* · versão atual em `code/versao.js`
 
@@ -108,7 +108,7 @@ erros.
 | `garantirPermissao()` de **escrita** ao conectar (v1.11) | `mode: "readwrite"` é pedido, não garantia: o navegador pode devolver a pasta só para leitura. |
 | Data de atualização **manual** no `versao.js` | Buscá-la na rede contradiz o uso offline. |
 | Ordem **alfabética** por padrão; "ordenar por volume" é opção (§8) | Ordenar por horas transforma o painel num *ranking* que o dado não sustenta. |
-| Repositório público, sem dado interno (§10.5) e `.gitignore` como grade | Mesmo motivo, e o repositório novo também é público (CC0). |
+| Repositório público, sem dado interno (§10.5) e `.gitignore` como grade | Mesmo motivo, e o repositório novo também é público (CC0 até a v0.8; Unlicense desde a 1.0). |
 | Elenco inventado nos exemplos e capturas | Helena Barros, Ana Beatriz Nunes, Carlos Eduardo Prado, Marina Duarte, Roberto Aguiar. |
 | Versão por *tag*, nunca por pasta (§1.3) | O beta do projeto de origem mostrou o custo das cópias. |
 
@@ -224,7 +224,7 @@ prova-de-uso/ROTEIRO.md  roteiro da fase 5: preparação, permissões (icacls), 
 project_design.md        este documento
 CLAUDE.md                instruções para agentes de IA
 README.md                apresentação curta
-LICENSE                  CC0 1.0
+LICENSE                  Unlicense (era CC0 1.0 até a v0.8)
 .gitignore               barra config.json, declaracoes/, pastas de teste e *.local.js
 ```
 
@@ -936,7 +936,7 @@ Estes dois itens são **descrição do programa**, e por isso têm teste
 mesma PR. O aviso não nomeia o controlador nem o canal do encarregado (DPO); se a
 organização quiser incluí-los, entram como texto novo, aprovado da mesma forma.
 
-### 12.8. Nome do produto — **Decidido: "Declaração de disponibilidade"**
+### 12.8. Nome do produto — **Decidido: "Declaro Meu Tempo"** (revisto em 26/10/2026, na 1.0)
 
 O repositório se chama `declare-time`, mas a interface é pt-BR.
 
@@ -945,6 +945,16 @@ O repositório se chama `declare-time`, mas a interface é pt-BR.
 manifesto. A primeira proposta, "Declaração de Horários", foi trocada porque o
 que se declara é **disponibilidade** prevista, e não horário cumprido (seção 1). O nome do repositório continua
 `declare-time`.
+
+**Revisão (26/10/2026, v1.0):** o projeto passa ao repositório
+[`ErnyBSB/declaro-tempo`](https://github.com/ErnyBSB/declaro-tempo) e o produto, a
+**"Declaro Meu Tempo"** (`name` no manifesto, `<title>`, rail e Sobre), com
+`short_name` **"Meu Tempo"**. A primeira pessoa ("declaro") diz o que a seção 1
+pede: quem declara é a própria pessoa, sobre si. O que se declara continua sendo
+previsão de disponibilidade, não horário cumprido; a mudança é de nome, não de
+escopo. Nenhuma chave gravada muda: o prefixo `dt-` do cache, as chaves do
+`localStorage` e os campos dos arquivos ficam como estão (5.6). O repositório
+`declare-time`, com as issues e os PRs até o #32, foi arquivado.
 
 ### 12.9. Jornada (8h ou 6h) — **Decidido: removida na v0.5** (21/10/2026, #13)
 

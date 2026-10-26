@@ -163,6 +163,8 @@ export default async function (t) {
     "itens factuais do aviso batem com o programa");
   await clica("#btnSobre"); await dorme(200);
   confere(await ev(`document.getElementById("dlgSobre").open`) && (await ev(txt("sobreVersao"))) === "Versão " + await ev("APP.versao"), "Sobre mostra a versão");
+  confere(await ev("document.title") === "Declaro Meu Tempo" && (await ev(txt("sobreTitulo"))) === "Declaro Meu Tempo" &&
+    (await ev(`document.querySelector(".marca").textContent`)).replace(/\s/g, " ") === "Declaro Meu Tempo", "nome do aplicativo no título, no rail e no Sobre (12.8)");
 
   console.log("11. Service worker e cache dt-");
   const caches = await ev(`caches.keys()`);

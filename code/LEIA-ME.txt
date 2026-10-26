@@ -1,5 +1,5 @@
-DECLARAÇÃO DE DISPONIBILIDADE (versão 0.8, out/26 — PWA em rede)
-================================================================
+DECLARO MEU TEMPO (versão 0.8, out/26 — PWA em rede)
+====================================================
 
 Este arquivo é a documentação de verdade do programa. Não é uma lista
 de mudanças: é o porquê de cada decisão, escrito para quem vai usar,
