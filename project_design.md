@@ -17,6 +17,12 @@
 > roteiro até a 1.0. Todas as decisões estão tomadas; o que falta para a 1.0 está na
 > lista de 10.3. O documento acompanha o `code/`: descreve sempre a versão atual, e as
 > anteriores se recuperam pelas *tags*.
+>
+> Até a v0.8 o projeto viveu no repositório
+> [`ErnyBSB/declare-time`](https://github.com/ErnyBSB/declare-time), hoje arquivado.
+> **As issues e os PRs citados aqui com número até #32 são de lá**; no repositório
+> [`ErnyBSB/declaro-tempo`](https://github.com/ErnyBSB/declaro-tempo) a numeração
+> recomeçou do #1.
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: "Prova de uso: relato"
-about: Um problema, mensagem confusa ou permissão errada encontrada na prova de uso (#20)
+about: Um problema, mensagem confusa ou permissão errada encontrada no uso do programa
 title: "[prova de uso] "
 labels: []
 ---
@@ -11,8 +11,6 @@ rede, nem o conteúdo do config.json ou dos arquivos de declaração. Descreva o
 com o elenco inventado: Helena Barros, Ana Beatriz Nunes, Carlos Eduardo Prado,
 Marina Duarte, Roberto Aguiar. Capturas de tela só se não mostrarem nada disso.
 -->
-
-Relacionado a #20.
 
 **O que eu fazia**
 <!-- ex.: "registrava férias de 01/12 a 20/12 em Meus horários" -->
