@@ -1,7 +1,14 @@
 # Prova de uso — roteiro
 
-Roteiro da fase 5 do `project_design.md` (issue #20): usar a **Declaração de
-disponibilidade** com **uma unidade real**, numa **pasta de rede real**, com as
+> **Situação (26/10/2026):** a prova de uso do dia a dia terminou e o programa foi
+> publicado como **v1.0**. As **permissões NTFS** e a conferência da TI ficaram
+> **pendentes** (issue #2 do `declaro-tempo`) e se fazem na pasta de produção,
+> seguindo "TI — permissões" e "TI — conferência com duas contas de teste", abaixo.
+> Este roteiro continua valendo para essa etapa e para levar o programa a uma
+> unidade nova. A issue da prova (#20) é do repositório antigo, `declare-time`.
+
+Roteiro da fase 5 do `project_design.md` (issue #20): usar o **Declaro Meu Tempo**
+com **uma unidade real**, numa **pasta de rede real**, com as
 **permissões NTFS aplicadas e conferidas pela TI**, durante uma ou duas semanas, e
 corrigir o que aparecer. É o último passo antes da v1.0 (lista em
 `project_design.md`, 10.3).

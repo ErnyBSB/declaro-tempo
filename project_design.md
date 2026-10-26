@@ -761,11 +761,13 @@ nome. Só se marca a *tag* com tudo isto feito:
 - [x] Contrato dos arquivos escrito (5.6) e conferido por `testes/06-contrato.mjs`.
 - [x] A 1.x recusa gravar por cima de arquivo de formato mais novo (5.6, regra 4).
 - [x] LEIA-ME completo, com instalação, permissões, cópia de segurança e publicação.
-- [ ] **Prova de uso** (fase 5, issue #20): uma unidade real, numa pasta real, com as
-      permissões NTFS aplicadas e conferidas pela TI, seguindo
-      `prova-de-uso/ROTEIRO.md`; ajustes do que aparecer. A prova pode **começar** sem
-      as permissões (só o uso do dia a dia, com cópia diária dos dados), mas este item
-      só se marca depois que a TI as aplicar e conferir, na mesma pasta.
+- [x] **Prova de uso** (fase 5, issue #20 do `declare-time`): uma unidade real, numa
+      pasta real, seguindo `prova-de-uso/ROTEIRO.md`; ajustes do que aparecer (v0.8).
+      Uso do dia a dia concluído em 26/10/2026.
+- [ ] **Permissões NTFS** aplicadas e conferidas pela TI na pasta de produção
+      (issue #2 do `declaro-tempo`). **Pendente por decisão de 26/10/2026:** a 1.0 foi
+      publicada antes delas, com os cuidados de "Se a prova começar sem as permissões
+      NTFS" do roteiro (cópia diária, nada pelo Explorador) valendo até lá.
 - [x] **Texto de finalidade da LGPD** na Ajuda (12.7, issue #17), e o teste de 01
       atualizado (v0.7).
 - [ ] `node testes/rodar.mjs` passando sobre a 1.0 e registrado em `testes/REGISTRO.md`
@@ -802,7 +804,9 @@ nome. Só se marca a *tag* com tudo isto feito:
 - **Ausências só descontam numa data**: no recorte por mês, quem esteve de férias
   parte do mês continua contando na cobertura daquele mês.
 - **Segurança dependente de NTFS**: sem as permissões, o controle é só contra uso
-  casual. O recorte do leitor por unidade nunca passa de controle de tela.
+  casual. O recorte do leitor por unidade nunca passa de controle de tela. Na 1.0,
+  publicada antes de a TI aplicar as permissões (#2), é esse o estado da pasta de
+  produção até a conclusão daquela issue.
 - **Administradores simultâneos**: a releitura antes de gravar (5.3) recusa a
   maioria dos conflitos no `config.json`, mas duas gravações no mesmo instante
   ainda podem se sobrepor, e a última vence.
@@ -987,8 +991,8 @@ declaração ou ausência.
 | **2. Declarar** | Tela *Meus horários*: formulário, total ao vivo, recusas de 7.2, colisão, encerrar/excluir/substituir, grade semanal. `atualizarArquivoPessoa`. | v0.2 |
 | **3. Painel** | Filtros, indicadores, tabela, CSV, "arquivos sem cadastro"; recorte por `unidadesVisiveis()` para o leitor. | v0.3 |
 | **4. Gráficos** | Mapa de cobertura, horas por semana, linha do tempo, todos em HTML/CSS (12.6). | v0.4 |
-| **5. Prova de uso** | Teste com uma unidade real, numa pasta real, com permissões NTFS aplicadas. Ajustes — o primeiro lote (#13: jornada, crédito, ausências) saiu na v0.5; o engano do dia (12.4 revista), na v0.8. Roteiro em `prova-de-uso/ROTEIRO.md`; relatos pelo modelo de issue "Prova de uso: relato" (#20). | v0.5… |
-| **6. Produção** | Esquema congelado, LEIA-ME completo, Ajuda com o texto de 12.7. Preparada em out/2026 (contrato 5.6, teste 06, guia de instalação na LEIA-ME; aviso LGPD na v0.7); a *tag* espera a prova de uso (10.3, #20). | **v1.0** |
+| **5. Prova de uso** | Teste com uma unidade real, numa pasta real, com permissões NTFS aplicadas. Ajustes — o primeiro lote (#13: jornada, crédito, ausências) saiu na v0.5; o engano do dia (12.4 revista), na v0.8. Roteiro em `prova-de-uso/ROTEIRO.md`; relatos pelo modelo de issue "Prova de uso: relato" (#20). **Uso do dia a dia concluído em 26/10/2026; permissões NTFS pendentes (#2 do `declaro-tempo`).** | v0.5–v0.8 |
+| **6. Produção** | Esquema congelado, LEIA-ME completo, Ajuda com o texto de 12.7. Preparada em out/2026 (contrato 5.6, teste 06, guia de instalação na LEIA-ME; aviso LGPD na v0.7); publicada em 26/10/2026 no repositório `declaro-tempo`, com o nome "Declaro Meu Tempo" (12.8) e as permissões NTFS pendentes (10.3, #2). | **v1.0** |
 
 Depois da 1.0, nesta ordem de custo/benefício: relatório impresso (o mecanismo da
 v1.13 de origem) e tabela de feriados opcional. (Ausências, antes nesta lista,

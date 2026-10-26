@@ -795,6 +795,9 @@ Limitações assumidas desde o início
 
 O que ainda está em aberto
 --------------------------
-O aviso de privacidade está na Ajuda desde a 0.7. O que falta para a
-1.0 é a prova de uso numa unidade real, numa pasta real, com as
-permissões conferidas pela TI (issue #20).
+O aviso de privacidade está na Ajuda desde a 0.7, e a prova de uso do
+dia a dia terminou em 26/10/2026. O que falta são as permissões NTFS
+na pasta de produção, aplicadas e conferidas pela TI (issue #2 do
+repositório declaro-tempo). Até lá valem os cuidados do roteiro da
+prova: cópia diária da pasta de dados e nada de mexer nos arquivos
+pelo Explorador.
