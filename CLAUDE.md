@@ -1,197 +1,233 @@
 # CLAUDE.md
 
-Guidance for Claude Code when working in this repository.
+Orientações para o Claude Code ao trabalhar neste repositório.
 
-## What this project is
+## Idioma: tudo em português
 
-**Declaração de disponibilidade** (repository `declare-time`): a static PWA where
-each person declares, for themselves, the hours and periods they expect to be
-available at work ("from 01/09 to 31/12, Mon–Fri, 9h–15h"). Readers (`leitor`) see
-the declarations of their units, and administrators (`adm`) see everything, in
-tables and charts. It is a **forecast of availability, not a time clock**: nothing
-is checked against what actually happened, and nothing feeds a performance metric.
+**Neste projeto, toda a interação é em português (pt-BR):** a conversa com o
+usuário, a interface, os comentários do código, a documentação, as mensagens de
+commit, os títulos e descrições de PR, as issues e os comentários no GitHub. Esta
+regra **prevalece sobre os skills globais** (`howto-commit`, `howto-pullrequest` e
+outros) que pedem inglês: siga o formato desses skills, mas escreva em português.
 
-It inherits its whole architecture from the **Programa de Resultados — COBIB**
-([`ErnyBSB/resultados`](https://github.com/ErnyBSB/resultados), v1.16), whose
-"Horários" section becomes the whole program here. When the docs say "the origin
-project", they mean that repository.
+Ficam em inglês só os termos que as ferramentas exigem: os tipos do Conventional
+Commits (`feat`, `fix`, `docs`, `test`, `chore`…), os trailers (`Refs:`,
+`Assisted-by:`, `Co-Authored-By:`) e a palavra **`Closes #<n>`** na descrição do PR
+— o GitHub só fecha a issue com as palavras-chave em inglês.
 
-There is **no server**. Shared state lives in a Windows network folder reached from
-the browser through the **File System Access API**, so the app runs in Chrome/Edge
-only. Offline use comes from a cache-first service worker.
+Os commits até a v0.8 estão em inglês: são histórico e não se reescrevem.
 
-**`project_design.md` is the source of truth** for architecture, data model, roles,
-decisions and roadmap. Read it before any change that touches those. Section 12
-records the decisions already taken; do not reopen them without a new argument.
-Section 13 is the roadmap.
+## O que é este projeto
 
-## Objectives (in priority order)
+**Declaro Meu Tempo** (repositório `declaro-tempo`): um PWA estático em que cada
+pessoa declara, por si mesma, os horários e períodos em que prevê estar disponível
+no trabalho ("de 01/09 a 31/12, seg–sex, 9h–15h"). Leitores (`leitor`) veem as
+declarações das suas unidades, e administradores (`adm`) veem tudo, em tabelas e
+gráficos. É uma **previsão de disponibilidade, não um ponto eletrônico**: nada é
+conferido contra o que aconteceu, e nada alimenta métrica de desempenho.
 
-1. **Zero infrastructure.** No backend, no database, no npm, no build step, no CDN.
-   The app must run by opening `code/index.html` from a folder. Any proposal that
-   adds a server, a package manager, or a network dependency is out of scope — say
-   so before implementing.
-2. **No write conflicts by construction.** *One file, one single writer*: each
-   person writes only their own `declaracoes/<slug>.json`, with no exception — not
-   even for administrators. Only `adm` writes `config.json`; since there can be
-   several administrators, `gravarConfig` must re-read the file strictly and refuse
-   the write if `atualizadoEm` changed since the screen loaded it.
-3. **Backward-compatible data.** Files already written in the shared folder must
-   keep loading. Handle a missing field by its absence (`(x && x.campo) || padrão`),
-   never by migrating or rewriting a person's file. Never rename a persisted key
-   (JSON fields, role names, `localStorage` keys) — add a new versioned key instead.
-4. **Legible to non-technical staff.** UI, code comments, and docs are **pt-BR**.
-   The interface explains refusals rather than failing silently.
-5. **Accessible and dependency-light.** Native elements first. There is **no
-   library at all**: the panel charts are plain HTML/CSS (decision 12.6) — do not
-   bring ECharts or any other chart library back.
+Até a v0.8 chamou-se "Declaração de disponibilidade" e viveu em
+[`ErnyBSB/declare-time`](https://github.com/ErnyBSB/declare-time), hoje arquivado.
+**As issues e PRs de número até #32 citados nos documentos são de lá**; a numeração
+recomeçou no repositório novo.
 
-## Layout
+Herda toda a arquitetura do **Programa de Resultados — COBIB**
+([`ErnyBSB/resultados`](https://github.com/ErnyBSB/resultados), v1.16), cuja seção
+"Horários" virou aqui o programa inteiro. Quando os documentos falam em "projeto de
+origem", é desse repositório.
+
+**Não há servidor.** O estado compartilhado fica numa pasta de rede do Windows,
+acessada pelo navegador por meio da **File System Access API**; por isso o
+aplicativo roda só no Chrome e no Edge. O uso offline vem de um service worker
+cache-first.
+
+**`project_design.md` é a fonte da verdade** para arquitetura, modelo de dados,
+papéis, decisões e roteiro. Leia-o antes de qualquer mudança que mexa nisso. A
+seção 12 registra as decisões já tomadas; não as reabra sem um argumento novo. A
+seção 13 é o roteiro.
+
+## Objetivos (em ordem de prioridade)
+
+1. **Zero infraestrutura.** Sem backend, banco de dados, npm, etapa de build ou
+   CDN. O aplicativo precisa rodar abrindo `code/index.html` direto da pasta.
+   Qualquer proposta que acrescente servidor, gerenciador de pacotes ou dependência
+   de rede está fora do escopo — diga isso antes de implementar.
+2. **Sem conflito de gravação, por construção.** *Um arquivo, um só escritor*: cada
+   pessoa grava só o próprio `declaracoes/<slug>.json`, sem exceção — nem para
+   administradores. Só `adm` grava o `config.json`; como pode haver vários
+   administradores, `gravarConfig` relê o arquivo em modo estrito e recusa a
+   gravação se `atualizadoEm` mudou desde que a tela o carregou.
+3. **Dados compatíveis com o passado.** Arquivos já gravados na pasta compartilhada
+   precisam continuar carregando. Trate campo ausente pela ausência
+   (`(x && x.campo) || padrão`), nunca migrando ou regravando o arquivo de uma
+   pessoa. Nunca renomeie uma chave persistida (campos JSON, nomes de papéis, chaves
+   do `localStorage`) — acrescente uma chave nova, versionada.
+4. **Legível para quem não é da área técnica.** Interface, comentários e documentos
+   em **pt-BR**. A tela explica as recusas em vez de falhar calada.
+5. **Acessível e quase sem dependências.** Elementos nativos primeiro. **Não há
+   biblioteca nenhuma**: os gráficos do painel são HTML/CSS puro (decisão 12.6) —
+   não traga de volta o ECharts nem outra biblioteca de gráficos.
+
+## Estrutura
 
 ```
-code/                    the app — one copy, always the current version
-  index.html             UI + all app logic + inline CSS, in one file
-  versao.js              the ONE place the app version is written
-  catalogo.js            static seed: workday lengths, weekday labels, example
-                         folder path; empty units and passwords (public repo)
-  rede.js                network folder access (pruned from origin)
-  sw.js                  service worker; cache key "dt-" + versao
-  manifest.webmanifest   PWA metadata (name shows on the installed icon)
-  gerar-senha.html       standalone tool: sha256("nome|senha")
-  icons/                 icon-192.png, icon-512.png — required for offline install
-  LEIA-ME.txt            the real documentation: what changed and WHY
-testes/                  end-to-end browser tests (dev tooling, not part of the app)
-  rodar.mjs              runner: node testes/rodar.mjs [prefixes…]
-  navegador.mjs          harness: static server, headless Chrome over CDP, OPFS folder
-  NN-*.mjs               one suite per area (01-entrada … 06-contrato)
-  REGISTRO.md            registered run per published tag (pt-BR)
-  resultados/            full output of each registered run
-prova-de-uso/ROTEIRO.md  phase 5 trial guide (pt-BR): setup, icacls permissions, tasks
-.github/ISSUE_TEMPLATE/  "Prova de uso: relato" issue template (privacy reminder)
-project_design.md        structured reference: schemas, roles, decisions, roadmap
+code/                    o aplicativo — uma cópia só, sempre a versão atual
+  index.html             interface + toda a lógica + CSS embutido, num arquivo só
+  versao.js              o ÚNICO lugar onde a versão é escrita
+  catalogo.js            semente estática: dias da semana, tipos de ausência,
+                         exemplo de caminho da pasta; unidades e senhas vazias
+                         (repositório público)
+  rede.js                acesso à pasta de rede (podado do projeto de origem)
+  sw.js                  service worker; chave do cache "dt-" + versao
+  manifest.webmanifest   metadados do PWA (o nome aparece no ícone instalado)
+  gerar-senha.html       ferramenta avulsa: sha256("nome|senha")
+  icons/                 icon-192.png, icon-512.png — necessários para instalar offline
+  LEIA-ME.txt            a documentação de verdade: o que mudou e POR QUÊ
+testes/                  testes de ponta a ponta no navegador (ferramenta de quem
+                         mantém, não parte do aplicativo)
+  rodar.mjs              executor: node testes/rodar.mjs [prefixos…]
+  navegador.mjs          apoio: servidor estático, Chrome sem tela via CDP, pasta no OPFS
+  NN-*.mjs               uma suíte por área (01-entrada … 06-contrato)
+  REGISTRO.md            execução registrada de cada tag publicada
+  resultados/            saída completa de cada execução registrada
+prova-de-uso/ROTEIRO.md  roteiro da prova de uso (fase 5): preparação, permissões
+                         icacls, tarefas
+.github/ISSUE_TEMPLATE/  modelo de issue "Prova de uso: relato" (lembrete de privacidade)
+project_design.md        referência estruturada: esquemas, papéis, decisões, roteiro
 ```
 
-Everything lives in a single `index.html` because modules (`type=module`) do not
-load from `file://`, and there is no build step to bundle them.
+Tudo fica num único `index.html` porque módulos (`type=module`) não carregam a
+partir de `file://`, e não há etapa de build para empacotá-los.
 
-**The two documents differ in purpose.** `code/LEIA-ME.txt` argues each decision in
-conversational pt-BR prose — update it on every behavioral change.
-`project_design.md` is the structured reference; update it when the architecture,
-the data model, the roles or the limitations move.
+**Os dois documentos têm propósitos diferentes.** `code/LEIA-ME.txt` argumenta cada
+decisão em prosa, em tom de conversa — atualize-o a cada mudança de comportamento.
+`project_design.md` é a referência estruturada; atualize-o quando a arquitetura, o
+modelo de dados, os papéis ou as limitações mudarem.
 
-## Working conventions
+## Convenções de trabalho
 
-**Versioning is git only.** `code/` is always the current version; each published
-version is a **tag** (`v0.1`, `v0.2`, …, `v1.0`). Never create per-version folders
-or dated copies. Numbering is `0.x` until the app is used with real data; `v1.0`
-is the first production use, after which the schema in section 5 is frozen.
+**Versionamento só pelo git.** `code/` é sempre a versão atual; cada versão
+publicada é uma **tag** (`v0.1`, …, `v1.0`, `v1.1`…). Nunca crie pastas por versão
+nem cópias datadas. A v1.0 é o primeiro uso em produção; depois dela, o esquema da
+seção 5 está congelado.
 
-**Publishing a version requires two edits, and they must agree:**
-1. `code/versao.js` → `versao`, `rotulo` and `atualizado` (manual date). The rail
-   label, the About window and the service worker cache key all derive from it —
-   never write the number anywhere else.
-2. the repository tag (`git tag -a vX.Y`).
+**Publicar uma versão exige duas edições, e elas precisam concordar:**
+1. `code/versao.js` → `versao`, `rotulo` e `atualizado` (data escrita à mão). A
+   etiqueta do rail, a janela Sobre e a chave do cache do service worker derivam
+   dele — nunca escreva o número em outro lugar.
+2. a tag do repositório (`git tag -a vX.Y`).
 
-**Branches and commits.** One branch per version in progress, merged to `main` by
-PR, then tagged on `main`. Commits follow Conventional Commits and are written in
-**English** — UI, comments and docs are pt-BR, the git history is not. The subject
-describes the user-visible change; the body argues the why; the footer carries
-`Refs: #<issue>` and `Assisted-by: IA`.
+**Branches e commits.** Uma branch por versão em andamento, integrada ao `main` por
+PR (com **merge commit**, para não perder o histórico) e marcada com a tag no `main`.
+Commits seguem o Conventional Commits, **em português**: o assunto descreve a
+mudança que o usuário vê; o corpo argumenta o porquê; o rodapé traz `Refs: #<issue>`
+e `Assisted-by: IA`. PRs têm as seções **O quê**, **Por quê** e **Como testar**, e
+terminam com `Closes #<issue>`.
 
-**Code style.** `"use strict"`, pt-BR identifiers (`declaracao`, `garantirPermissao`,
-`atualizarArquivoPessoa`), `/* ===== TITLE ===== */` banners at section heads.
-Inline comments explain *why*, in the LEIA-ME voice. Role checks go through the
-predicates `ehPessoa()`, `ehLeitor()`, `ehAdm()`, `ehMeu(d)` and
-`unidadesVisiveis()` — never inline role-string comparisons. Hiding a rail item is
-not access control; scope lives in `podeVer(v)`.
+**Estilo de código.** `"use strict"`, identificadores em pt-BR (`declaracao`,
+`garantirPermissao`, `atualizarArquivoPessoa`), faixas `/* ===== TÍTULO ===== */`
+no início das seções. Comentários explicam o *porquê*, no tom da LEIA-ME. Checagens
+de papel passam pelos predicados `ehPessoa()`, `ehLeitor()`, `ehAdm()`, `ehMeu(d)` e
+`unidadesVisiveis()` — nunca comparações de texto de papel no meio do código.
+Esconder um item do rail não é controle de acesso; o recorte fica em `podeVer(v)`.
 
-**Styling.** CSS custom properties in `:root` with pt-BR names (`--tinta`, `--papel`,
-`--ficha`, `--verde`, `--dourado`, `--grafite`, `--linha`, `--raio`). Colors carry
-meaning — **green is a current declaration** — so do not reuse it decoratively. The
-gold token was removed in v0.5 along with the jornada (decision 12.9). Keep
+**Estilo visual.** Propriedades CSS em `:root` com nomes em pt-BR (`--tinta`,
+`--papel`, `--ficha`, `--verde`, `--grafite`, `--linha`, `--raio`). As cores têm
+significado — **verde é declaração vigente** — então não o use como enfeite. O
+dourado saiu na v0.5 junto com a jornada (decisão 12.9). Mantenha
 `[hidden]{display:none !important}`.
 
-## Domain model
+## Modelo do domínio
 
-- **Roles are cumulative and come from `config.json`**, never from a screen choice.
-  Everyone registered is a `pessoa` and declares only for themselves. `leitor`
-  (a list of units) and `adm` (`true`) are attributes inside `pessoas[nome]`. Many
-  leitores per unit, many admins. The last `adm` cannot be removed.
-- **Declaration** (`project_design.md` 5.1): period `de`…`ate` (`ate: null` = open
-  ended), weekdays `dias` (0 = Sunday), one range `inicio`–`fim` per declaration
-  (split shifts are two declarations; crossing midnight is refused), `unidade`
-  stamped as a snapshot. There is **no jornada** since v0.5 (12.9): never ask for it;
-  `cargaHoraria`/`carga` in old files are left untouched and unread.
-- **Collision** only when period + weekday + hour all overlap.
-- **Lifecycle**: delete only before it starts (`de` > today); end a current one by
-  setting `ate` to today or later (only shortening); never edit one that has started;
-  "substituir" ends the current on the eve of the new start (today or later) and
-  creates the new one in a single write. Status (vigente/futura/encerrada) is
-  computed against today, never stored.
-- **Panel** (leitor and adm, scoped by `unidadesVisiveis()`): declarations are
-  attributed to the **file owner** (registry name whose slug is the file name), never
-  to the `pessoa` field inside; invalid declarations are skipped, not fatal, and kept
-  in the file. Table filters by the stamped unit, "sem declaração" by the current
-  registry unit; unreadable files are never counted as "sem declaração". CSV cells
-  starting with `= + - @` are prefixed with `'`.
-- **Charts** (panel, v0.4) are HTML/CSS fed by the same `recortePainel()` as the
-  table and CSV — never a second computation. Coverage counts distinct people per
-  weekday-hour (whole hour), on a validated single-green ramp with zero in grey;
-  bars are neutral ink, one series; weekly hours only
-  in date mode. Tooltips use `textContent` and also show on keyboard focus.
-- **Absences** (`ausencias`, v0.5) live in the person's file: `{id, pessoa, unidade,
-  tipo, de, ate, obs, criadaEm}`, `tipo` from `TIPOS_AUSENCIA` keys in `catalogo.js`
-  (never rename a key), `ate` required, no overlap between one person's absences,
-  same end/delete lifecycle as declarations. They never end declarations. In the
-  panel they remove the person from coverage on the reference date only (the grid
-  keeps its hours so uncovered hours show as zero); in month mode nobody is removed.
-- **Reserved name**, not used in 1.0: key `realizados`.
+- **Papéis são cumulativos e vêm do `config.json`**, nunca de uma escolha na tela.
+  Todo cadastrado é `pessoa` e declara só por si. `leitor` (lista de unidades) e
+  `adm` (`true`) são atributos dentro de `pessoas[nome]`. Vários leitores por
+  unidade, vários administradores. O último `adm` não pode ser removido.
+- **Declaração** (`project_design.md` 5.1): período `de`…`ate` (`ate: null` = sem
+  fim), dias da semana `dias` (0 = domingo), uma faixa `inicio`–`fim` por declaração
+  (turno partido são duas declarações; atravessar a meia-noite é recusado),
+  `unidade` gravada como retrato. **Não há jornada** desde a v0.5 (12.9): nunca a
+  peça; `cargaHoraria`/`carga` em arquivos antigos ficam intocados e sem leitura.
+- **Colisão** só quando período + dia da semana + hora se cruzam.
+- **Ciclo de vida**: excluir só antes de começar (`de` > hoje) **ou no dia em que foi
+  declarada** (`criadaEm` hoje, v0.8, 12.4 revista); encerrar uma vigente pondo `ate`
+  em hoje ou depois (só encurta); nunca editar uma que começou; "substituir" encerra
+  a vigente na véspera do novo início (hoje ou depois) e cria a nova numa só
+  gravação. A situação (vigente/futura/encerrada) é calculada contra hoje, nunca
+  gravada.
+- **Painel** (leitor e adm, recortado por `unidadesVisiveis()`): as declarações são
+  atribuídas ao **dono do arquivo** (o nome do cadastro cujo slug é o nome do
+  arquivo), nunca ao campo `pessoa` lá dentro; declarações inválidas são puladas,
+  não fatais, e continuam no arquivo. A tabela filtra pela unidade gravada; "sem
+  declaração", pela unidade atual do cadastro; arquivos ilegíveis nunca contam como
+  "sem declaração". Células do CSV que começam com `= + - @` ganham `'` na frente.
+- **Gráficos** (painel, v0.4) são HTML/CSS alimentados pelo mesmo `recortePainel()`
+  da tabela e do CSV — nunca uma segunda conta. A cobertura conta pessoas distintas
+  por dia da semana e hora (hora inteira), numa escala de um só verde validada, com
+  zero em cinza; as barras são de tinta neutra, uma série; horas semanais só no modo
+  data. As dicas usam `textContent` e aparecem também no foco do teclado.
+- **Ausências** (`ausencias`, v0.5) ficam no arquivo da pessoa: `{id, pessoa,
+  unidade, tipo, de, ate, obs, criadaEm}`, `tipo` vindo das chaves de
+  `TIPOS_AUSENCIA` em `catalogo.js` (nunca renomeie uma chave), `ate` obrigatório,
+  sem sobreposição entre ausências da mesma pessoa, mesmo ciclo de encerrar/excluir
+  das declarações (sem a exceção do dia). Nunca encerram declarações. No painel,
+  tiram a pessoa da cobertura só na data de referência (a grade mantém as horas,
+  para que as descobertas apareçam como zero); no modo mês ninguém é retirado.
+- **Nome reservado**, sem uso na 1.0: a chave `realizados`.
 
-## Verifying changes
+## Conferindo as mudanças
 
-**Run the browser tests before every PR:** `node testes/rodar.mjs` (all suites) or
-`node testes/rodar.mjs 03` (by prefix). They need Node 22+ and Chrome or Edge
-(`CHROME=/path` if it is not found), use only Node built-ins — never add npm
-packages — and fail on any console error in the page. They serve `code/` on a
-local port, drive headless Chrome over the DevTools Protocol, and replace only the
-folder picker and permission prompt: the network folder is the browser's OPFS, so
-the real `rede.js` reads and writes real files. `FOTOS=/some/dir` saves
-screenshots for a visual check; look at them after any layout change.
+**Rode os testes no navegador antes de todo PR:** `node testes/rodar.mjs` (todas as
+suítes) ou `node testes/rodar.mjs 03` (por prefixo). Precisam de Node 22+ e Chrome
+ou Edge (`CHROME=/caminho` se não for encontrado), usam só módulos nativos do Node
+— nunca acrescente pacotes npm — e falham com qualquer erro no console da página.
+Servem `code/` numa porta local, dirigem o Chrome sem tela pelo DevTools Protocol e
+trocam só o seletor de pasta e o pedido de permissão: a pasta de rede é o OPFS do
+navegador, então o `rede.js` de verdade lê e grava arquivos de verdade.
+`FOTOS=/alguma/pasta` salva capturas de tela para conferência visual; olhe-as depois
+de qualquer mudança de leiaute.
 
-**When a version is tagged, register its test run** in `testes/REGISTRO.md`: run
-the suites on the tag's code, save the output to `testes/resultados/<aaaa-mm-dd>_<versão>.txt`
-and add a row (date, version, commit, `node -v`, browser version, checks, failures).
-Ad-hoc `resultado-testes*.txt` files are git-ignored.
+**Quando uma versão ganha tag, registre a execução dos testes** em
+`testes/REGISTRO.md`: rode as suítes sobre o código da tag, salve a saída em
+`testes/resultados/<aaaa-mm-dd>_<versão>.txt` e acrescente uma linha (data, versão,
+commit, `node -v`, versão do navegador, conferências, falhas). Arquivos avulsos
+`resultado-testes*.txt` são ignorados pelo git.
 
-**The file contract is frozen for v1.0** (`project_design.md` 5.6, checked by
-`testes/06-contrato.mjs`): only add keys, never rename, retype or reuse one, never
-migrate files, and a `formato` > 1 file is never written over. A new key means
-updating the 5.6 table and that suite in the same PR.
+**O contrato dos arquivos está congelado desde a v1.0** (`project_design.md` 5.6,
+conferido por `testes/06-contrato.mjs`): só se acrescentam chaves, nunca se
+renomeia, muda o tipo ou reaproveita uma; nunca se migram arquivos; e um arquivo de
+`formato` > 1 nunca é gravado por cima. Uma chave nova exige atualizar a tabela 5.6
+e essa suíte no mesmo PR.
 
-**When behavior changes, change the tests in the same PR.** Add checks to the suite
-of the area you touched, or a new `NN-name.mjs` suite exporting `nome`, `opcoes`
-(`downloads`, `foco`) and a default `async function (t)`. Test data uses the
-invented cast only.
+**Quando o comportamento muda, os testes mudam no mesmo PR.** Acrescente
+conferências à suíte da área mexida, ou uma suíte nova `NN-nome.mjs` que exporte
+`nome`, `opcoes` (`downloads`, `foco`) e uma `async function (t)` padrão. Os dados
+de teste usam só o elenco inventado.
 
-The tests do not replace a manual pass: open `code/index.html` in Chrome against a
-local test folder (`pasta-teste/`, already in `.gitignore`) holding `config.json`
-and `declaracoes/`, in several tabs, switching between pessoa, leitor and adm, and
-with two admins editing the registry. When touching `sw.js` or cached assets, use a
-hard reload — a stale version in `versao.js` will serve the previous cache and hide
-your change.
+Os testes não substituem a conferência à mão: abra `code/index.html` no Chrome
+contra uma pasta de teste local (`pasta-teste/`, já no `.gitignore`) com
+`config.json` e `declaracoes/`, em várias abas, alternando entre pessoa, leitor e
+adm, e com dois administradores mexendo no cadastro. Ao mexer no `sw.js` ou em
+arquivos do cache, recarregue forçando (Ctrl+Shift+R) — uma versão velha em
+`versao.js` serve o cache anterior e esconde a mudança.
 
-## Do not
+## Não faça
 
-- Add build tooling, package managers, frameworks, or remote assets — in the app or
-  in `testes/` (Node built-ins only).
-- Create per-version folders or dated copies of files — versions are tags.
-- Rename persisted keys or role names, or reuse the reserved ones.
-- Write the version number anywhere but `versao.js`, or bump it without tagging.
-- Rewrite or migrate JSON files that users already have in the network folder.
-- Let anyone write another person's declaration file, administrators included.
-- Turn declared hours into a metric, a ranking, or a compliance check.
-- Write English into the UI, comments, or LEIA-ME.
-- **Commit internal data.** The repository is public: no real person's name, no
-  password (not even hashed), no `config.json`, no declaration file. `catalogo.js`
-  is an empty seed. Examples use the invented cast (Helena Barros, Ana Beatriz
-  Nunes, Carlos Eduardo Prado, Marina Duarte, Roberto Aguiar).
+- Acrescentar ferramentas de build, gerenciadores de pacotes, frameworks ou recursos
+  remotos — no aplicativo ou em `testes/` (só módulos nativos do Node).
+- Criar pastas por versão ou cópias datadas de arquivos — versões são tags.
+- Renomear chaves persistidas ou nomes de papéis, ou reaproveitar as reservadas.
+- Escrever o número da versão fora do `versao.js`, ou trocá-lo sem marcar a tag.
+- Regravar ou migrar arquivos JSON que os usuários já têm na pasta de rede.
+- Deixar alguém gravar o arquivo de declaração de outra pessoa, administradores
+  inclusive.
+- Transformar as horas declaradas em métrica, ranking ou conferência de
+  cumprimento.
+- Escrever em inglês na interface, nos comentários, na LEIA-ME, nos commits, nos PRs
+  ou nas issues.
+- Integrar PR com "Squash" ou "Rebase": apagam o histórico que as tags e o
+  `testes/REGISTRO.md` citam.
+- **Versionar dado interno.** O repositório é público: nenhum nome de pessoa real,
+  nenhuma senha (nem em hash), nenhum `config.json`, nenhum arquivo de declaração.
+  `catalogo.js` é uma semente vazia. Exemplos usam o elenco inventado (Helena
+  Barros, Ana Beatriz Nunes, Carlos Eduardo Prado, Marina Duarte, Roberto Aguiar).
