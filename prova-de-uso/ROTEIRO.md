@@ -40,13 +40,14 @@ estrutura das pastas, em `project_design.md`, 4.2.
 ### TI — pastas
 
 - [ ] Pasta administrativa criada: `\\________\________\`
-      (caminho de rede completo, começando com `\\SERVIDOR\`, ou uma letra de
-      unidade mapeada igual em todos os computadores, como `Z:\`. Um caminho que
-      começa com uma barra só depende da unidade de cada computador.)
+- [ ] Unidade de rede **`R:`** mapeada para a pasta administrativa em **todos** os
+      computadores dos participantes (v1.1, #6), de modo que os dados fiquem em
+      `R:\Compartilhamento`. Sem o mapeamento, escolher a pasta pelo item "Rede" da
+      janela de seleção pode falhar sem explicação no Edge.
 - [ ] `code\` com a pasta `code/` da **última tag** publicada (versão no rodapé de
       "Sobre o programa": ______).
-- [ ] `code\catalogo.js` com `PASTA_REDE` trocado pelo caminho real de
-      `Compartilhamento\` e `CATALOGO_ATUALIZADO` com a data do dia.
+- [ ] `code\catalogo.js` com `PASTA_REDE` em `R:\\Compartilhamento` (o padrão desde
+      a v1.1; só muda se a letra mudar) e `CATALOGO_ATUALIZADO` com a data do dia.
 - [ ] `Compartilhamento\` criada, vazia, ao lado de `code\`.
 - [ ] `Compartilhamento\declaracoes\` criada, vazia (o programa a criaria na primeira
       declaração, mas as permissões dela precisam existir antes).

@@ -14,7 +14,7 @@
    são os de antes. Esta data não descongela nada; ela só aparece em
    "Sobre o programa", para que a pergunta "o navegador já está com a
    minha edição?" tenha resposta num relance. */
-const CATALOGO_ATUALIZADO = "21.10.2026";
+const CATALOGO_ATUALIZADO = "28.10.2026";
 
 /* Rótulos dos dias, na ordem de Date.getUTCDay(): 0 = domingo. O que
    fica gravado na declaração é o número, nunca o rótulo — por isso os
@@ -69,5 +69,11 @@ const SENHAS = {
    administrativa tem duas subpastas: code\ (este programa) e
    Compartilhamento\ (os dados) — ver project_design.md, 4.2. Este
    caminho é o de Compartilhamento\, nunca o de code\.
-   É um EXEMPLO: troque pelo caminho real na cópia publicada em code\. */
-const PASTA_REDE = "\\\\SERVIDOR\\PastaAdministrativa\\Compartilhamento";
+
+   Desde a v1.1, o padrão é a unidade de rede R: mapeada em TODOS os
+   computadores, apontando para a pasta administrativa (#6): sem o
+   mapeamento, a escolha pelo item "Rede" falha sem aviso no Edge. A tela
+   mostra "Necessário mapear a unidade de rede " + este caminho. Só troque
+   se a organização mudar a letra; e o programa não confere o caminho —
+   o navegador não o revela —, então isto é orientação, não trava. */
+const PASTA_REDE = "R:\\Compartilhamento";
