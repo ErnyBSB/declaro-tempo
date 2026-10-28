@@ -13,9 +13,28 @@ conferência à mão nem a prova de uso (`prova-de-uso/ROTEIRO.md`).
 
 | Data | Versão | Commit | Ambiente | Resultado | Saída |
 |---|---|---|---|---|---|
+| 28/10/2026 | v1.1 | `c3513e4` | Ubuntu 24.04.5 LTS · Node 22.17.1 · Google Chrome 155.0.8059.79 (headless) | **195 conferências, 0 falhas**, nenhum erro no console | [`2026-10-28_v1.1.txt`](resultados/2026-10-28_v1.1.txt) |
 | 26/10/2026 | v1.0 | `dcadd1b` | Ubuntu 24.04.5 LTS · Node 22.17.1 · Google Chrome 155.0.8059.79 (headless) | **190 conferências, 0 falhas**, nenhum erro no console | [`2026-10-26_v1.0.txt`](resultados/2026-10-26_v1.0.txt) |
 | 26/10/2026 | v0.8 | `9bbf780` | Ubuntu 24.04.5 LTS · Node 22.17.1 · Google Chrome 155.0.8059.79 (headless) | **189 conferências, 0 falhas**, nenhum erro no console | [`2026-10-26_v0.8.txt`](resultados/2026-10-26_v0.8.txt) |
 | 22/10/2026 | v0.7 | `37f115f` | Ubuntu 24.04.5 LTS · Node 22.17.1 · Google Chrome 155.0.8059.79 (headless) | **181 conferências, 0 falhas**, nenhum erro no console | [`2026-10-22_v0.7.txt`](resultados/2026-10-22_v0.7.txt) |
+
+## 28/10/2026 — v1.1
+
+Execução sobre o código da *tag* `v1.1` (`c3513e4`, o merge do PR #7), rodada no
+próprio `main` da *tag*. A única suíte que mudou é a `01-entrada`, com cinco
+conferências novas (#6): a entrada pede o mapeamento da unidade R:, a escolha
+cancelada pelo navegador avisa em vez de ficar muda e não conecta nada, e a pasta
+lenta avisa que está demorando, com o aviso sumindo quando ela responde.
+
+| Suíte | O que cobre | Conferências | Falhas |
+|---|---|---|---|
+| `01-entrada` | oficializar, entrar, **unidade R:, escolha cancelada, pasta lenta**, cadastro e papéis, dois administradores, arquivos ilegíveis, Ajuda (aviso LGPD), Sobre e nome do aplicativo, cache | 51 | 0 |
+| `02-declarar` | recusas do formulário, total ao vivo, colisão, substituir, encerrar, excluir, engano do dia, grade da semana | 43 | 0 |
+| `03-painel` | indicadores, atribuição pelo dono do arquivo, filtros, recorte do leitor, CSV | 31 | 0 |
+| `04-graficos` | cobertura, horas por semana, linha do tempo, dica no foco | 22 | 0 |
+| `05-ausencias` | sem jornada, ausências na tela e no painel | 29 | 0 |
+| `06-contrato` | chaves gravadas contra a tabela 5.6, chaves desconhecidas, formato mais novo | 19 | 0 |
+| **Total** | | **195** | **0** |
 
 ## 26/10/2026 — v1.0
 
