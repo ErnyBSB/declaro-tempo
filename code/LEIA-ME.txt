@@ -15,6 +15,48 @@ As seções vêm da mais nova para a mais antiga. Uma seção antiga não é
 apagada quando a decisão muda: a nova diz o que mudou e por quê, e a
 antiga fica como registro do que valia antes.
 
+Conectar a pasta pela unidade R: (novidade da v1.1)
+---------------------------------------------------
+Logo no começo do uso da 1.0, alguém escolheu a pasta compartilhada
+certa e o programa não fez nada: nenhum erro, nenhum nome para
+escolher. O computador dela não tinha a pasta mapeada como unidade de
+rede (issue #6).
+
+Sem unidade mapeada, chega-se à pasta pelo item "Rede" da janela de
+seleção, e ali é fácil marcar algo que não é uma pasta de verdade — o
+próprio servidor, um atalho. O Edge então cancela a escolha com o mesmo
+erro de quem fecha a janela, e o programa, que tratava esse erro como
+"a pessoa desistiu", ficava calado. Sem mapeamento, ler a pasta também
+pode demorar — a autenticação na rede, um servidor lento —, e aí a tela
+dizia "Conectado" e não saía disso.
+
+Duas mudanças, então.
+
+A organização passa a mapear a unidade R: em todos os computadores,
+apontando para a pasta administrativa. A pasta de dados fica sempre em
+R:\Compartilhamento, o PASTA_REDE do catalogo.js passou a ser esse, e a
+tela de entrada, que antes mostrava o caminho completo da rede, agora
+diz "Necessário mapear a unidade de rede R:\Compartilhamento". Uma
+letra só é mais fácil de explicar do que \\SERVIDOR\..., e "Este
+Computador" é um lugar que todo mundo sabe achar.
+
+E o programa deixou de falhar calado. Quando a escolha volta
+cancelada, aparece um aviso: nenhuma pasta foi conectada, e, se a
+pessoa chegou a escolher uma, que mapeie a unidade e escolha
+R:\Compartilhamento em "Este Computador". O aviso é neutro de
+propósito: daqui não se distingue quem fechou a janela de quem teve a
+escolha recusada. Quando a pasta não responde em 5 segundos, outro
+aviso diz que ela está demorando — e some se a leitura terminar. O
+programa não desiste da leitura; só deixa de parecer travado.
+
+O que o programa NÃO faz: conferir que a pasta veio de R:. O navegador
+entrega ao programa o nome da pasta escolhida, nunca o caminho, então a
+letra é regra de instalação, e não trava. Quem entrar pelo caminho
+completo da rede continua entrando: o que identifica a pasta é o selo
+do config.json, e não o caminho. A contrapartida de usar a letra: se
+num dia o R: não estiver mapeado, a reconexão automática falha, e é só
+mapear e usar "Reconectar pasta".
+
 Versão 1.0: Declaro Meu Tempo, em produção (novidade da v1.0)
 -------------------------------------------------------------
 A 1.0 marca o primeiro uso em produção. Nada mudou no jeito de usar:
@@ -695,7 +737,7 @@ O programa e os dados moram em lugares separados, lado a lado, dentro
 de uma pasta de rede administrativa, compartilhada e com permissões
 NTFS:
 
-  \\SERVIDOR\PastaAdministrativa\
+  \\SERVIDOR\PastaAdministrativa\     (mapeada como R: em todos os computadores)
     code\                 o PROGRAMA
       index.html          o que as pessoas abrem
       (e os demais arquivos da pasta code/ do repositório)
@@ -719,9 +761,11 @@ Instalar, passo a passo
 -----------------------
 1. Na pasta administrativa, copie a pasta code/ de uma versão
    publicada para code\.
-2. No code\catalogo.js, troque o exemplo de PASTA_REDE pelo caminho
-   real de Compartilhamento\ (é só o texto que a tela mostra como
-   orientação) e atualize CATALOGO_ATUALIZADO.
+2. Mapeie a unidade de rede R: para a pasta administrativa em TODOS os
+   computadores que vão usar o programa (por política de grupo, de
+   preferência). O code\catalogo.js já traz PASTA_REDE como
+   R:\Compartilhamento — é só o texto que a tela mostra como orientação;
+   troque-o apenas se a letra for outra, e atualize CATALOGO_ATUALIZADO.
 3. Crie a pasta Compartilhamento\, vazia, ao lado de code\, e aplique
    as permissões da seção seguinte.
 4. Quem vai administrar abre code\index.html, conecta
@@ -731,8 +775,8 @@ Instalar, passo a passo
    as unidades de cada um) e, se for o caso, outros administradores e
    senhas.
 6. Avise as pessoas: cada uma abre code\index.html, conecta
-   Compartilhamento\ uma vez em cada computador e escolhe o próprio
-   nome.
+   R:\Compartilhamento uma vez em cada computador — escolhida em "Este
+   Computador", nunca pelo item "Rede" — e escolhe o próprio nome.
 
 Aberto com dois cliques no index.html (endereço file://), tudo
 funciona. Para instalar como aplicativo e usar sem rede, o programa

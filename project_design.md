@@ -260,7 +260,7 @@ partir de uma pasta de rede administrativa, compartilhada e com permissões NTFS
 duas subpastas lado a lado:
 
 ```
-\\SERVIDOR\<pasta administrativa>\     pasta de rede administrativa (NTFS)
+\\SERVIDOR\<pasta administrativa>\     pasta de rede administrativa (NTFS), mapeada como R:
   code\                                o PROGRAMA: cópia da pasta code/ de uma tag
     index.html                         o que as pessoas abrem (duplo clique)
     versao.js, catalogo.js, rede.js,
@@ -280,6 +280,11 @@ duas subpastas lado a lado:
 - **`Compartilhamento\` são os dados, e só os dados.** É a pasta escolhida em
   "Conectar pasta", oficializada pelo primeiro administrador (6.1) e apontada em
   `PASTA_REDE`. O programa não depende do nome: o que vale é o selo do `config.json`.
+- **A pasta administrativa é a unidade `R:` em todos os computadores** (v1.1, 12.10).
+  Cada pessoa conecta `R:\Compartilhamento`, escolhida em "Este Computador", e
+  nunca pelo item "Rede" da janela de seleção. A tela de entrada diz "Necessário
+  mapear a unidade de rede R:\Compartilhamento". O programa não confere a letra,
+  porque o navegador não revela o caminho da pasta escolhida: é regra de instalação.
 - **Uma não encosta na outra.** Publicar uma versão nova é substituir `code\` (com o
   cuidado de conservar o `catalogo.js` da organização); `Compartilhamento\` fica
   intocado. A cópia de segurança é a de `Compartilhamento\` inteira.
@@ -447,7 +452,7 @@ const DIAS_SEMANA  = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 const UNIDADES     = [];                             // semente vazia (repo público)
 const SENHAS       = {};
 const EXIGIR_SENHA = false;
-const PASTA_REDE   = '\\\\SERVIDOR\\PastaAdministrativa\\Compartilhamento';  // exemplo (4.2)
+const PASTA_REDE   = 'R:\\Compartilhamento';      // unidade R: mapeada em todos os computadores (4.2, 12.10)
 ```
 
 ### 5.5. Compatibilidade para trás
@@ -788,6 +793,7 @@ nome. Só se marca a *tag* com tudo isto feito:
 | v0.7 | out/2026 | Aviso de Privacidade e Proteção de Dados (LGPD) na Ajuda, no lugar do marcador de texto pendente (12.7, #17). |
 | v0.8 | out/2026 | Prova de uso: a declaração pode ser excluída no dia em que foi declarada, mesmo já começada (12.4 revista, #20). |
 | v1.0 | out/2026 | Primeiro uso em produção, no repositório `declaro-tempo`: nome "Declaro Meu Tempo" (12.8 revista), licença Unlicense, prova de uso encerrada; contrato dos arquivos (5.6) congelado. Permissões NTFS pendentes (#2). |
+| v1.1 | out/2026 | Conectar a pasta deixa de falhar calado (#6): a escolha cancelada pelo navegador avisa e orienta, e a pasta lenta avisa que está demorando. Unidade `R:` mapeada em todos os computadores, com `PASTA_REDE = R:\Compartilhamento` e a orientação "Necessário mapear a unidade de rede" na entrada (12.10). Nenhuma chave gravada muda. |
 
 ---
 
@@ -821,7 +827,7 @@ Registro das decisões que este documento deixou em aberto na versão pré-códi
 As que tocam esquema gravado (12.1, 12.2, 12.4) foram tomadas em **20/10/2026**,
 antes do código, e as demais seguiram a recomendação de cada item. A 12.3 foi revista
 no mesmo dia, ao se definirem os três papéis; a 12.5 e a 12.9, na v0.5; a 12.7 foi
-fechada na v0.7, com o aviso de privacidade na Ajuda. Cada item guarda as
+fechada na v0.7, com o aviso de privacidade na Ajuda; a 12.10, na v1.1. Cada item guarda as
 alternativas descartadas, para que a decisão não seja refeita sem o argumento.
 
 ### 12.1. Previsão ou realização? — **Decidido: previsão recorrente**
@@ -979,6 +985,31 @@ O que já foi gravado fica (5.5): `cargaHoraria` no arquivo da pessoa e `carga` 
 declarações antigas continuam lá, intocados, e deixam de ser lidos. Como
 consequência, entrar não grava mais nada: o arquivo da pessoa nasce na primeira
 declaração ou ausência.
+
+### 12.10. Como se chega à pasta — **Decidido: unidade `R:` mapeada** (28/10/2026, #6)
+
+No início do uso da v1.0, num computador com Edge e sem a pasta mapeada, a pessoa
+escolhia a pasta certa e o programa não fazia nada. Navegando pelo item "Rede" da
+janela de seleção, é fácil marcar algo que não é uma pasta de verdade (o servidor, um
+atalho), e o Edge então cancela a escolha com o mesmo `AbortError` de quem fecha a
+janela, que o programa ignorava. Sem mapeamento, a leitura da pasta também pode
+demorar, pela autenticação SMB ou por um servidor lento.
+
+**Decisão:** a organização mapeia a unidade `R:` em todos os computadores, apontando
+para a pasta administrativa; `PASTA_REDE` passa a `R:\Compartilhamento`, e a entrada
+diz "Necessário mapear a unidade de rede R:\Compartilhamento". Junto, o programa
+deixa de falhar calado: o cancelamento mostra um aviso neutro (os dois casos são
+indistinguíveis) com o caminho certo, e a pasta que não responde em 5 segundos ganha
+um aviso de demora, que some quando a leitura termina — sem desistir dela.
+
+Alternativas descartadas: **conferir o caminho no programa** — a File System Access
+API entrega o nome da pasta, nunca o caminho; **caminho de rede completo
+(`\\SERVIDOR\...`)** — continua funcionando, mas é o caminho que levou ao problema, e
+uma letra única é mais fácil de explicar a quem não é da área técnica. Limitação
+admitida: quem conecta por `R:` depende do mapeamento em toda sessão; se ele faltar
+num dia, a reconexão automática falha e é preciso "Reconectar pasta". O selo do
+`config.json` continua sendo o que identifica a pasta: entrar por `R:` ou pelo
+caminho completo não gera o aviso de pasta diferente.
 
 ---
 
