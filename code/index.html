@@ -332,8 +332,8 @@ code{font-family:ui-monospace,Consolas,monospace; font-size:12.5px}
   display:flex; align-items:center; justify-content:center;
   background:var(--papel); color:var(--grafite); border:1px solid var(--linha)}
 .etapa .selo.ok{background:var(--rail); color:#F9FBF9; border-color:var(--rail)}
-.caminho{font-family:ui-monospace,Consolas,monospace; font-size:11.5px; color:var(--grafite);
-  overflow-wrap:anywhere}
+.caminho{font-size:13px; font-weight:600; color:var(--tinta); overflow-wrap:anywhere}
+.caminho code{font-family:ui-monospace,Consolas,monospace; font-size:12.5px}
 
 /* ---------- janelas ---------- */
 dialog{border:0; border-radius:var(--raio); padding:24px; width:min(480px,92vw);
@@ -1276,15 +1276,44 @@ function estadoConexao(ok, txt) {
   $("btnPasta").textContent = ok ? "Trocar pasta" : "Conectar pasta";
   ajustarConfig();
 }
+/* O caminho que a organização exige para a pasta de dados (catalogo.js).
+   Só orienta: o navegador entrega ao programa o nome da pasta escolhida,
+   nunca o caminho, então não há como conferir por onde ela foi aberta. */
+const CAMINHO_PASTA = (typeof PASTA_REDE !== "undefined" && PASTA_REDE) || "";
+
+/* Sem a unidade de rede mapeada, ou com o servidor lento, ler a pasta pode
+   levar minutos sem erro nenhum (#6). A tela já diz "Conectado" e o
+   cartão de identificação não aparece — quem olha conclui que o programa
+   travou. Passado este tempo, um aviso diz que a pasta é que está lenta.
+   Não se desiste da leitura: ela pode terminar, e aí o aviso some. */
+const PACIENCIA_PASTA_MS = 5000;
+async function conectarCom(handle) {
+  dirRaiz = handle;
+  estadoConexao(true, `Conectado a “${handle.name}”`);
+  let demorou = false;
+  const relogio = setTimeout(() => {
+    demorou = true;
+    avisar($("avisoPasta"),
+      `A pasta “${handle.name}” está demorando a responder. Isso costuma acontecer quando ` +
+      "a unidade de rede não está mapeada neste computador ou o servidor está lento. " +
+      "Aguarde; se nada mudar em alguns minutos, " +
+      (CAMINHO_PASTA ? `mapeie a unidade de rede ${CAMINHO_PASTA}` : "mapeie a unidade de rede") +
+      ", feche e abra o programa e conecte a pasta de novo.", false, true);
+  }, PACIENCIA_PASTA_MS);
+  try { await aposConectar(); }
+  finally {
+    clearTimeout(relogio);
+    if (demorou) calar($("avisoPasta"));
+  }
+}
+
 async function conectarSilencioso() {
   if (!("showDirectoryPicker" in window))
     return avisar($("avisoPasta"),
       "Este navegador não oferece acesso a pastas. Use Chrome ou Edge.", true, true);
   const salvo = await obterHandleRaiz();
   if (salvo && await garantirPermissao(salvo, "readwrite", false)) {
-    dirRaiz = salvo;
-    estadoConexao(true, `Conectado a “${salvo.name}”`);
-    await aposConectar();
+    await conectarCom(salvo);
   } else if (salvo) {
     estadoConexao(false, `Pasta “${salvo.name}” memorizada — clique para reconectar`);
     $("btnPasta").textContent = "Reconectar pasta";
@@ -1318,12 +1347,24 @@ $("btnPasta").addEventListener("click", async () => {
       await salvarHandleRaiz(handle);
     }
     calar($("avisoPasta"));
-    dirRaiz = handle;
-    estadoConexao(true, `Conectado a “${handle.name}”`);
-    await aposConectar();
+    await conectarCom(handle);
   } catch (e) {
-    if (e && e.name !== "AbortError")
-      avisar($("avisoPasta"), "Não foi possível acessar a pasta: " + e.message, true, true);
+    /* AbortError não é só "a pessoa fechou a janela". O Edge devolve o
+       mesmo erro, sem mensagem, quando o que foi escolhido não vira uma
+       pasta de verdade — um item do nó "Rede", o próprio servidor, um
+       atalho do "Acesso rápido" —, que é justamente por onde navega quem
+       não tem a unidade mapeada (#6). Os dois casos são indistinguíveis
+       aqui; por isso o aviso é neutro e diz onde a pasta deve estar. */
+    if (e && e.name === "AbortError")
+      avisar($("avisoPasta"),
+        "Nenhuma pasta foi conectada. Se você chegou a escolher uma, o navegador recusou a " +
+        "escolha — costuma acontecer quando ela é aberta pelo item “Rede”. " +
+        (CAMINHO_PASTA
+          ? `Mapeie a unidade de rede e escolha ${CAMINHO_PASTA} em “Este Computador”.`
+          : "Mapeie a unidade de rede e escolha a pasta em “Este Computador”."),
+        false, true);
+    else
+      avisar($("avisoPasta"), "Não foi possível acessar a pasta: " + (e && e.message), true, true);
   }
 });
 $("btnAtualizar").addEventListener("click", () => aposConectar());
@@ -3016,8 +3057,13 @@ montarDias();
 montarTiposAusencia();
 atualizarTotal();
 for (const b of railItens()) b.setAttribute("aria-current", "false");
-$("txtCaminho").textContent =
-  (typeof PASTA_REDE !== "undefined" && PASTA_REDE) || "definida pela administração";
+/* A orientação pede o mapeamento, e não só mostra o caminho: sem a
+   unidade mapeada, a escolha da pasta falha sem aviso no Edge (#6). */
+if (CAMINHO_PASTA) {
+  const caminho = document.createElement("code");
+  caminho.textContent = CAMINHO_PASTA;
+  $("txtCaminho").replaceChildren("Necessário mapear a unidade de rede ", caminho);
+} else $("txtCaminho").textContent = "Caminho definido pela administração";
 ajustarConfig();   // começa na entrada, com o rail vazio
 /* O .catch() não é zelo excessivo: abrir o IndexedDB e consultar a
    permissão do handle podem lançar quando o navegador está com os dados

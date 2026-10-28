@@ -16,8 +16,35 @@ export default async function (t) {
   console.log("1. Pasta virgem: oficializar");
   confere(await ev(txt("versaoApp")) === await ev("APP.rotulo") && (await ev("APP.rotulo")).startsWith("versão "), "etiqueta da versão vem do versao.js");
   confere(await ev(vis("vEntrada")), "abre na entrada");
-  await clica("#btnPasta"); await dorme(500);
+  confere(await ev(txt("txtCaminho")) === "Necessário mapear a unidade de rede R:\\Compartilhamento",
+    "entrada pede o mapeamento da unidade R: (#6)");
+
+  // O Edge cancela sem mensagem quando a pasta vem do nó "Rede" (#6)
+  await ev(`window.__picker = window.showDirectoryPicker;
+    window.showDirectoryPicker = async () => { throw new DOMException("The user aborted a request.", "AbortError"); }`);
+  await clica("#btnPasta"); await dorme(300);
+  const abortado = await ev(aviso("avisoPasta"));
+  confere(abortado.includes("Nenhuma pasta foi conectada") && abortado.includes("R:\\Compartilhamento"),
+    "escolha cancelada não fica muda: avisa e orienta para R:\\Compartilhamento");
+  confere(!(await ev(vis("cardIdent"))) && (await ev(txt("btnPasta"))) === "Conectar pasta",
+    "escolha cancelada não conecta nada");
+
+  // Pasta lenta: o config.json demora a responder (#6)
+  await ev(`window.showDirectoryPicker = window.__picker;
+    window.__getFH = FileSystemDirectoryHandle.prototype.getFileHandle;
+    FileSystemDirectoryHandle.prototype.getFileHandle = async function (n, o) {
+      if (n === "config.json") await new Promise(r => setTimeout(r, 7000));
+      return window.__getFH.call(this, n, o);
+    }`);
+  await clica("#btnPasta"); await dorme(5800);
+  const lento = await ev(aviso("avisoPasta"));
+  confere(lento.includes("demorando a responder") && !(await ev(vis("cardIdent"))),
+    "pasta lenta: avisa que está demorando, em vez de parecer travada");
+  await dorme(1800);
   confere(await ev(vis("blocoOficializar")), "pasta sem config.json oferece oficializar");
+  confere(!(await ev(`getComputedStyle(document.getElementById("avisoPasta")).display !== "none"`)),
+    "quando a pasta responde, o aviso de demora some");
+  await ev(`FileSystemDirectoryHandle.prototype.getFileHandle = window.__getFH`);
   await valor("inpOfNome", "Roberto Aguiar"); await valor("inpOfUnidade", "SEORE");
   await valor("inpOfSenha", "1234"); await valor("inpOfSenha2", "9999");
   
