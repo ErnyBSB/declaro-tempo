@@ -1,4 +1,4 @@
-DECLARO MEU TEMPO (versão 1.0, out/26 — PWA em rede)
+DECLARO MEU TEMPO (versão 1.1, out/26 — PWA em rede)
 ====================================================
 
 Este arquivo é a documentação de verdade do programa. Não é uma lista
